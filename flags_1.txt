@@ -1,0 +1,4 @@
+pyinstaller --noconsole --onefile --icon=i64.ico --add-data="i64.ico;." --add-data="example_calculator;example_calculator" --add-data="nodeeditor;nodeeditor" main.py
+
+
+pyinstaller --noconsole --onefile --icon=i64.ico --add-data="i64.ico;." --add-data="example_calculator;example_calculator" --add-data="nodeeditor;nodeeditor" main.py
