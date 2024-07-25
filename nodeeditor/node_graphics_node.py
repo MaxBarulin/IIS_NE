@@ -61,7 +61,7 @@ class QDMGraphicsNode(QGraphicsItem):
         self._title_font = QFont("Ubuntu", 10)
 
         self._color = QColor("#7F000000")
-        self._color_selected = QColor("#FF37A6FF")
+        self._color_selected = QColor("#FF37A6FF") #для белой темы
         self._color_hovered = QColor("#FF37A6FF")
 
         self._pen_default = QPen(self._color)

@@ -20,9 +20,10 @@ path_img_in = f'{put}\icons\{open_img_in}'
 path_img_tab = f'{put}\icons\{open_img_tab}'
 path_img_com = f'{put}\icons\{open_img_com}'
 
+#для белой темы
 style = '''
 QPlainTextEdit {
-    color: #000000;    
+    color: #000000; 
 }
 QComboBox {
     color: #000000;    

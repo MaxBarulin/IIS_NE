@@ -4,11 +4,13 @@ QDMNodeContentWidget {
 QDMNodeContentWidget QFrame {
   background: transparent;
 }
+#для белой темы
 QDMNodeContentWidget QTextEdit,
 QDMNodeContentWidget QLineEdit {
   background: #FFFFFF;
   color: #000000;
 }
+#для белой темы
 QDMNodeContentWidget QLabel {
   color: #000000;
 }
