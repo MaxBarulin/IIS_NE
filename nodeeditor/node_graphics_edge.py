@@ -50,8 +50,8 @@ class QDMGraphicsEdge(QGraphicsPathItem):
 
     def initAssets(self):
         """Initialize ``QObjects`` like ``QColor``, ``QPen`` and ``QBrush``"""
-        self._color = self._default_color = QColor("#001000")
-        self._color_selected = QColor("#00ff00")
+        self._color = self._default_color = QColor("#666")
+        self._color_selected = QColor("#FF37A6FF")
         self._color_hovered = QColor("#FF37A6FF")
         self._pen = QPen(self._color)
         self._pen_selected = QPen(self._color_selected)

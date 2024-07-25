@@ -61,7 +61,7 @@ class QDMGraphicsNode(QGraphicsItem):
         self._title_font = QFont("Ubuntu", 10)
 
         self._color = QColor("#7F000000")
-        self._color_selected = QColor("#FFFFA637")
+        self._color_selected = QColor("#FF37A6FF")
         self._color_hovered = QColor("#FF37A6FF")
 
         self._pen_default = QPen(self._color)
@@ -71,8 +71,8 @@ class QDMGraphicsNode(QGraphicsItem):
         self._pen_hovered = QPen(self._color_hovered)
         self._pen_hovered.setWidthF(3.0)
 
-        self._brush_title = QBrush(QColor("#FF313131"))
-        self._brush_background = QBrush(QColor("#E3212121"))
+        self._brush_title = QBrush(QColor("#dfdfdf"))
+        self._brush_background = QBrush(QColor("#f2f2f2"))
 
     def onSelected(self):
         self.node.scene.grScene.itemSelected.emit()

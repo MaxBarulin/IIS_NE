@@ -22,10 +22,10 @@ path_img_com = f'{put}\icons\{open_img_com}'
 
 style = '''
 QPlainTextEdit {
-    color: #fff;    
+    color: #000000;    
 }
 QComboBox {
-    color: #fff;    
+    color: #000000;    
     background-color: #666;
     padding: 4px;
     border: 0px solid rgb(#fff);
@@ -35,7 +35,7 @@ QComboBox {
     selection-background-color: rgb(66, 66, 66);
 }
 QComboBox QAbstractItemView {
-    color: #fff;    
+    color: #000000;    
     background-color: #666;
     padding: 4px;
     border: 0px solid rgb(#fff);

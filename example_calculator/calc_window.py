@@ -158,7 +158,7 @@ class CalculatorWindow(NodeEditorWindow):
                 "<b>ISS node editor</b> предназначен для создания пользовательских процессов расчета норм на различные виды работ машиностроения.<br><br>"
                 "Процессы строятся из нод, что позволяет визуализировать их, легко добавлять, изменять и сохранять уже имеющиеся, а так же упростить отладку и контроль.<br><br>"
                 "Такой подход упрощает обучение и маштабирование. Делает программу универсальной для разных задач.<br><br>"
-                "<h1><a style='color: white; text-decoration:none' href='https://t.me/Cvela_siren'>Max B</a></h1>")
+                "<h1><a style='color: black; text-decoration:none' href='https://t.me/Cvela_siren'>Max B</a></h1>")
 
 
     def socket(self):
