@@ -9,7 +9,7 @@ from qtpy.QtCore import Qt, QSignalMapper
 from nodeeditor.utils import loadStylesheets
 from nodeeditor.node_editor_window import NodeEditorWindow
 from example_calculator.calc_sub_window import CalculatorSubWindow
-from example_calculator.calc_drag_listbox import QDMDragListbox, QDMDragListbox1, QDMDragListbox2
+from example_calculator.calc_drag_listbox import QDMDragListbox, QDMDragListbox1, QDMDragListbox2, QDMDragListbox3
 from nodeeditor.utils import dumpException, pp
 from example_calculator.calc_conf import CALC_NODES
 from nodeeditor.node_edge import EDGE_TYPE_BEZIER, EDGE_TYPE_DIRECT, EDGE_TYPE_SQUARE
@@ -46,7 +46,7 @@ class CalculatorWindow(NodeEditorWindow):
 
         self.stylesheet_filename = os.path.join(os.path.dirname(__file__), "qss/nodeeditor.qss")
         loadStylesheets(
-            os.path.join(os.path.dirname(__file__), "qss/nodeeditor-dark.qss"),
+            os.path.join(os.path.dirname(__file__), "qss/nodeeditor.qss"),
             self.stylesheet_filename
         )
 
@@ -73,6 +73,7 @@ class CalculatorWindow(NodeEditorWindow):
         self.createNodesDock0()
         self.createNodesDock1()
         self.createNodesDock2()
+        self.createNodesDock3()
 
         self.createActions()
         self.createMenus()
@@ -258,6 +259,11 @@ class CalculatorWindow(NodeEditorWindow):
         toolbar_nodes2.triggered.connect(self.onWindowNodesToolbar2)
         toolbar_nodes2.setChecked(self.nodesDock2.isVisible())
 
+        toolbar_nodes3 = self.windowMenu.addAction("Фрезерные")
+        toolbar_nodes3.setCheckable(True)
+        toolbar_nodes3.triggered.connect(self.onWindowNodesToolbar2)
+        toolbar_nodes3.setChecked(self.nodesDock2.isVisible())
+
 
 
         self.windowMenu.addSeparator()
@@ -374,6 +380,15 @@ class CalculatorWindow(NodeEditorWindow):
         self.nodesDock2.setFloating(False)
 
         self.addDockWidget(Qt.RightDockWidgetArea, self.nodesDock2)
+
+    def createNodesDock3(self):
+        self.nodesListWidget = QDMDragListbox3()
+
+        self.nodesDock3 = QDockWidget("Фрезерные")
+        self.nodesDock3.setWidget(self.nodesListWidget)
+        self.nodesDock3.setFloating(False)
+
+        self.addDockWidget(Qt.RightDockWidgetArea, self.nodesDock3)
 
     def createStatusBar(self):
         self.statusBar().showMessage("Готово")
