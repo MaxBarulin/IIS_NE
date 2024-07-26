@@ -152,12 +152,12 @@ class QDMGraphicsNode(QGraphicsItem):
 
         self.button.setStyleSheet("""
             QPushButton {
-                background-color: #777;
-                border-radius: 4px;
-                border: 1px solid #000000;
+                background-color: #dfdfdf;
+                border-radius: 0px;
+                border: 1px solid #dfdfdf;
             }
         """)
-
+        111
     def showPopup(self):
         if self.dialog is None:
             self.dialog = QDialog()

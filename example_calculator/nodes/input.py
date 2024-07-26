@@ -27,23 +27,23 @@ QPlainTextEdit {
 }
 QComboBox {
     color: #000000;    
-    background-color: #666;
+    background-color: #f2f2f2;
     padding: 4px;
     border: 0px solid rgb(#fff);
     border-radius: 0px;
     padding-left: 5px;
     padding-right: 5px;
-    selection-background-color: rgb(66, 66, 66);
+    selection-background-color: #dfdfdf;
 }
 QComboBox QAbstractItemView {
     color: #000000;    
-    background-color: #666;
+    background-color: #f2f2f2;
     padding: 4px;
     border: 0px solid rgb(#fff);
     border-radius: 0px;
     padding-left: 5px;
     padding-right: 5px;
-    selection-background-color: rgb(66, 66, 66);
+    selection-background-color: #dfdfdf;
 }
 '''
 
