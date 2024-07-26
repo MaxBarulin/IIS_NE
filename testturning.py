@@ -114,5 +114,5 @@ if SPEED == "-":
 else:
     SPEED = float(SPEED)
 
-time_required = calculate_turning_time(D, d, t, L, V, s, LR, SPEED) * 1.1
+#time_required = calculate_turning_time(D, d, t, L, V, s, LR, SPEED) * 1.1
 print(f"Время обработки: {time_required:.2f} минут")

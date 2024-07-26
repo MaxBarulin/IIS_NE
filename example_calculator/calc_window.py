@@ -171,12 +171,21 @@ class CalculatorWindow(NodeEditorWindow):
         # path_img_icons = f'{put}\\{open_img_icons}'
         # print(path_img_icons)
         # os.startfile(path_img_icons)
-
-        # self.sa = Edge
-        # self.sa.edge_type = EDGE_TYPE_BEZIER
+        #
+        # # self.sa = Edge
+        # # self.sa.edge_type = EDGE_TYPE_BEZIER
         print("1")
 
     def socket1(self):
+        open_img_icons = "testturning.exe"
+
+        put = os.path.dirname(__file__)
+        print(put)
+
+        path_img_icons = f'{put}\\{open_img_icons}'
+        print(path_img_icons)
+        os.startfile(path_img_icons)
+
         # self.sa = Edge
         # self.sa.edge_type = EDGE_TYPE_DIRECT
         print("2")
