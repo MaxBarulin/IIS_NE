@@ -157,7 +157,7 @@ class QDMGraphicsNode(QGraphicsItem):
                 border: 1px solid #dfdfdf;
             }
         """)
-        111
+
     def showPopup(self):
         if self.dialog is None:
             self.dialog = QDialog()
