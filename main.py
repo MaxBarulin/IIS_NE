@@ -73,7 +73,7 @@ class Login(QtWidgets.QDialog):
         layout.addWidget(self.buttonLogin)
 
         try:
-            path = f"X:\БЛОК ПОДГОТОВКИ ПРОИЗВОДСТВА\УТПП\Барулин МА\log.txt"  # смотрим развод у матвеевой в папке
+            path = f"X:\БЛОК ИНЖЕНЕРНОЙ ПОДГОТОВКИ ПРОИЗВОДСТВА\УТПП\ОНУиАТПКиС\Барулин МА\log.txt"  # смотрим развод у матвеевой в папке
             with open(path) as file:
                 self.s = file.read().splitlines()
 
