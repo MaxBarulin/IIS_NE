@@ -9,35 +9,35 @@ from example_calculator.calc_window import CalculatorWindow
 
 style = """
 QMessageBox {
-    color: white;
-    background: #474747;    
+    color: black;
+    background: #dfdfdf;    
 }
 
 QtWidgets {
-    color: white;
-    background: #474747;    
+    color: black;
+    background: #dfdfdf;    
 }
 
 QDialog {
-    color: white;
-    background: #474747;
+    color: black;
+    background: #f2f2f2;
 }
 
 QLineEdit {
-    color: white;    
+    color: black;    
     border-radius: 4px;   
     border:2px solid #3a3a3a;
-    background: #555;
+    background: #f2f2f2;
 }
 
 QPushButton {
-    color: white;    
+    color: black;    
     border-radius: 4px;   
     border: 2px solid #3a3a3a;
-    background: #555;
+    background: #f2f2f2;
     padding-left: 0px;
     padding-right: 0px;
-    selection-background-color: rgb(140, 146, 255);
+    selection-background-color: #dfdfdf;
     padding: 6px;
 }
 """
@@ -73,7 +73,7 @@ class Login(QtWidgets.QDialog):
         layout.addWidget(self.buttonLogin)
 
         try:
-            path = f"X:\Инженерный Центр\УТПП\Барулин МА\log.txt"  # смотрим развод у матвеевой в папке
+            path = f"X:\БЛОК ИНЖЕНЕРНОЙ ПОДГОТОВКИ ПРОИЗВОДСТВА\УТПП\ОНУиАТПКиС\Барулин МА\log.txt"  # смотрим развод у матвеевой в папке
             with open(path) as file:
                 self.s = file.read().splitlines()
 
@@ -92,7 +92,7 @@ class Login(QtWidgets.QDialog):
             QtWidgets.QMessageBox.warning(
                 self,
                 "Ошибка",
-                "<p style='color: white;'> Неправильный логин или пароль </p>",
+                "<p style='color: black;'> Неправильный логин или пароль </p>",
             )
 
 

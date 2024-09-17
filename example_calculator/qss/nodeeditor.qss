@@ -4,13 +4,15 @@ QDMNodeContentWidget {
 QDMNodeContentWidget QFrame {
   background: transparent;
 }
+#для белой темы
 QDMNodeContentWidget QTextEdit,
 QDMNodeContentWidget QLineEdit {
-  background: #666;
-  color: #fff;
+  background: #FFFFFF;
+  color: #000000;
 }
+#для белой темы
 QDMNodeContentWidget QLabel {
-  color: #e0e0e0;
+  color: #000000;
 }
 QDMNodeContentWidget QLabel#calc_node_bg,
 QDMNodeContentWidget QLabel#calc_node_mul,

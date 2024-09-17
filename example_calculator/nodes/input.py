@@ -20,29 +20,30 @@ path_img_in = f'{put}\icons\{open_img_in}'
 path_img_tab = f'{put}\icons\{open_img_tab}'
 path_img_com = f'{put}\icons\{open_img_com}'
 
+#для белой темы
 style = '''
 QPlainTextEdit {
-    color: #fff;    
+    color: #000000; 
 }
 QComboBox {
-    color: #fff;    
-    background-color: #666;
+    color: #000000;    
+    background-color: #f2f2f2;
     padding: 4px;
     border: 0px solid rgb(#fff);
     border-radius: 0px;
     padding-left: 5px;
     padding-right: 5px;
-    selection-background-color: rgb(66, 66, 66);
+    selection-background-color: #dfdfdf;
 }
 QComboBox QAbstractItemView {
-    color: #fff;    
-    background-color: #666;
+    color: #000000;    
+    background-color: #f2f2f2;
     padding: 4px;
     border: 0px solid rgb(#fff);
     border-radius: 0px;
     padding-left: 5px;
     padding-right: 5px;
-    selection-background-color: rgb(66, 66, 66);
+    selection-background-color: #dfdfdf;
 }
 '''
 
