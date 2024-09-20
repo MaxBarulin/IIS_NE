@@ -703,7 +703,7 @@ class NodeMulti(Serializable):
 
     def initSettings(self):
         """Initialize properties and socket information"""
-        self.socket_spacing = 22
+        self.socket_spacing = 60
 
         self.input_socket_position = LEFT_BOTTOM
         self.output_socket_position = RIGHT_TOP

@@ -17,7 +17,8 @@ from example_calculator.calc_conf import (
     OP_NODE_GROUP1,
     OP_NODE_TABLE_T1,
     OP_NODE_FORMULA,
-    OP_NODE_PEREMEN
+    OP_NODE_PEREMEN,
+    OP_NODE_TURN1
 )
 from example_calculator.calc_node_base import CalcNode, CalcTable, CalcNode_lbl, CalcNodeMulti, CalcNodeMulti1, CalcNodeFormula, CalcNodePerem
 from example_calculator.table import create_tables, create_tables_turning
@@ -39,6 +40,23 @@ path_img_div = f"{put}\\icons\\{open_img_div}"
 path_img_tab = f"{put}\\icons\\{open_img_tab}"
 path_img_com = f"{put}\\icons\\{open_img_com}"
 
+
+@register_node(OP_NODE_TURN1)
+class CalcNode_Group2(CalcNodePerem):
+    icon = path_img_mul
+    op_code = OP_NODE_TURN1
+    op_title = "ДЛЯ ТЕСТА"
+    content_label = "буква=число"
+    content_label_objname = "calc_node_perem"
+
+    def __init__(self, scene):
+        super().__init__(scene)
+        self.eval()
+
+    def evalOperation(self, inputs):
+        print(f"+++{inputs}")
+        # Логика для выполнения группировки
+        return str(inputs)
 
 @register_node(OP_NODE_PEREMEN)
 class CalcNode_Group2(CalcNodePerem):

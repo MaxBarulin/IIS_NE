@@ -291,8 +291,8 @@ class CalculatorWindow(NodeEditorWindow):
 
         toolbar_nodes3 = self.windowMenu.addAction("Фрезерные")
         toolbar_nodes3.setCheckable(True)
-        toolbar_nodes3.triggered.connect(self.onWindowNodesToolbar2)
-        toolbar_nodes3.setChecked(self.nodesDock2.isVisible())
+        toolbar_nodes3.triggered.connect(self.onWindowNodesToolbar3)
+        toolbar_nodes3.setChecked(self.nodesDock3.isVisible())
 
 
 
@@ -377,6 +377,12 @@ class CalculatorWindow(NodeEditorWindow):
             self.nodesDock2.hide()
         else:
             self.nodesDock2.show()
+
+    def onWindowNodesToolbar3(self):
+        if self.nodesDock3.isVisible():
+            self.nodesDock3.hide()
+        else:
+            self.nodesDock3.show()
 
     def createToolBars(self):
         pass
