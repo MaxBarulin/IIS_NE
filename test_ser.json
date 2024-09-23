@@ -1,0 +1,119 @@
+{
+    "id": 75252400,
+    "scene_width": 64000,
+    "scene_height": 64000,
+    "nodes": [
+        {
+            "id": 75322344,
+            "title": "\u0417\u043d\u0430\u0447\u0435\u043d\u0438\u0435",
+            "pos_x": -296.0,
+            "pos_y": -196.0,
+            "inputs": [],
+            "outputs": [
+                {
+                    "id": 75374376,
+                    "index": 0,
+                    "multi_edges": true,
+                    "position": 5,
+                    "socket_type": 3
+                }
+            ],
+            "content": {
+                "value": "1"
+            },
+            "op_code": 1
+        },
+        {
+            "id": 75322392,
+            "title": "\u0417\u043d\u0430\u0447\u0435\u043d\u0438\u0435",
+            "pos_x": -340.0,
+            "pos_y": -100.0,
+            "inputs": [],
+            "outputs": [
+                {
+                    "id": 75374472,
+                    "index": 0,
+                    "multi_edges": true,
+                    "position": 5,
+                    "socket_type": 3
+                }
+            ],
+            "content": {
+                "value": "1"
+            },
+            "op_code": 1
+        },
+        {
+            "id": 75415664,
+            "title": "\u0420\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442",
+            "pos_x": 400.0,
+            "pos_y": -140.0,
+            "inputs": [
+                {
+                    "id": 75415736,
+                    "index": 0,
+                    "multi_edges": false,
+                    "position": 2,
+                    "socket_type": 1
+                }
+            ],
+            "outputs": [],
+            "content": {},
+            "op_code": 2
+        },
+        {
+            "id": 70182104,
+            "title": "\u0414\u041b\u042f \u0422\u0415\u0421\u0422\u0410",
+            "pos_x": 101.0,
+            "pos_y": -265.0,
+            "inputs": [
+                {
+                    "id": 70182248,
+                    "index": 0,
+                    "multi_edges": false,
+                    "position": 2,
+                    "socket_type": 2
+                },
+                {
+                    "id": 70182272,
+                    "index": 1,
+                    "multi_edges": false,
+                    "position": 2,
+                    "socket_type": 2
+                }
+            ],
+            "outputs": [
+                {
+                    "id": 70182296,
+                    "index": 0,
+                    "multi_edges": true,
+                    "position": 5,
+                    "socket_type": 1
+                }
+            ],
+            "content": {},
+            "op_code": 26,
+            "value": 2.0
+        }
+    ],
+    "edges": [
+        {
+            "id": 70182320,
+            "edge_type": 3,
+            "start": 75374376,
+            "end": 70182248
+        },
+        {
+            "id": 75417656,
+            "edge_type": 3,
+            "start": 75374472,
+            "end": 70182272
+        },
+        {
+            "id": 70182080,
+            "edge_type": 3,
+            "start": 70182296,
+            "end": 75415736
+        }
+    ]
+}

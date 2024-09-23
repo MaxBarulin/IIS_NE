@@ -452,6 +452,101 @@ class CalcNodePerem(NodeMulti):
         return res
 
 
+class CalcNodeTURN1(Node):
+    icon = ""
+    op_code = 0
+    op_title = "Undefined"
+    content_label = ""
+    content_label_objname = "calc_node_bg"
+
+    GraphicsNode_class = CalcGraphicsNodeSmall
+    NodeContent_class = CalcContent
+
+    def __init__(self, scene, inputs=[2,2], outputs=[1]):
+        super().__init__(scene, self.__class__.op_title, inputs, outputs)
+
+        self.value = None
+
+        # it's really important to mark all nodes Dirty by default
+        self.markDirty()
+
+
+    def initSettings(self):
+        super().initSettings()
+        self.input_socket_position = LEFT_CENTER
+        self.output_socket_position = RIGHT_CENTER
+
+
+    def evalOperation(self, input1, input2):
+        return 123
+
+    def evalImplementation(self):
+        i1 = self.getInput(0)
+        i2 = self.getInput(1)
+
+        if i1 is None or i2 is None:
+            self.markInvalid()
+            self.markDescendantsDirty()
+            self.grNode.setToolTip("Connect all inputs")
+            self.eval()
+            return None
+
+        else:
+            val = self.evalOperation(i1.eval(), i2.eval())
+
+            self.value = val
+
+            self.markDirty(False)
+            self.markInvalid(False)
+            self.grNode.setToolTip("")
+
+            self.markDescendantsDirty()
+            self.evalChildren()
+
+            return self.value
+
+    def eval(self):
+        if not self.isDirty() and not self.isInvalid():
+            print(" _> returning cached %s value:" % self.__class__.__name__, self.value)
+            return self.value
+
+        try:
+            val = self.evalImplementation()
+            return val
+        except ValueError as e:
+            self.markInvalid()
+            self.grNode.setToolTip(str(e))
+            self.markDescendantsDirty()
+        except Exception as e:
+            self.markInvalid()
+            self.grNode.setToolTip(str(e))
+            dumpException(e)
+
+
+    def onInputChanged(self, socket=None):
+        print("%s::__onInputChanged" % self.__class__.__name__)
+        self.markDirty()
+        self.eval()
+
+
+    def serialize(self):
+        res = super().serialize()
+        res['op_code'] = self.__class__.op_code
+        res['value'] = self.value
+        return res
+
+    def deserialize(self, data, hashmap={}, restore_id=True):
+        res = super().deserialize(data, hashmap, restore_id)
+        print("Deserialized CalcNode '%s'" % self.__class__.__name__, "res:", res)
+        try:
+            value = data['value']
+            self.value = value
+            return True & res
+        except Exception as e:
+            dumpException(e)
+        return res
+
+
 class CalcNodeMulti1(NodeMulti):
     icon = ""
     op_code = 0
