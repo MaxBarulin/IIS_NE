@@ -47,7 +47,8 @@ class CalcNode_Group2(CalcNodeTURN1):
     op_code = OP_NODE_TURN1
     op_title = "ДЛЯ ТЕСТА"
     content_label = "нач Д"
-    #content_label_1 = "кон Д"
+    content_label_1 = "кон Д"
+    content_label_2 = "asd"
     content_label_objname = ("calc_node_TURN1")
 
     def __init__(self, scene):

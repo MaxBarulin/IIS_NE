@@ -334,38 +334,18 @@ class CalcContent_TURN_1(QDMNodeContentWidget):
         layout.addWidget(self.radio_2)
         layout.addWidget(self.radio_3)
 
-        self.radio_1.toggled.connect(lambda: self.on_radio_value_changed_1(self.radio_1))
-        self.radio_2.toggled.connect(lambda: self.on_radio_value_changed_2(self.radio_2))
-        self.radio_3.toggled.connect(lambda: self.on_radio_value_changed_3(self.radio_3))
+        self.radio_1.toggled.connect(lambda: self.on_radio_value_changed(self.radio_1))
+        self.radio_2.toggled.connect(lambda: self.on_radio_value_changed(self.radio_2))
+        self.radio_3.toggled.connect(lambda: self.on_radio_value_changed(self.radio_3))
 
         # Устанавливаем макет для контента ноды
         self.setLayout(layout)
 
-    def on_radio_value_changed_1(self, radio_button):
+    def on_radio_value_changed(self, radio_button):
         """Обработка выбора радиокнопки"""
         if radio_button.isChecked():
-            self.radio_1.setChecked(True)
             # Обновляем метку с выбранным значением
-            self.label.setText(f"Выбрано1: {radio_button.text()}")
-            # Уведомляем ноду, что значение изменилось
-            self.node.update_logic(radio_button.text())
-
-    def on_radio_value_changed_2(self, radio_button):
-        """Обработка выбора радиокнопки"""
-        if radio_button.isChecked():
-            self.radio_2.setChecked(True)
-            # Обновляем метку с выбранным значением
-            self.label.setText(f"Выбрано2: {radio_button.text()}")
-            # Уведомляем ноду, что значение изменилось
-            self.node.update_logic(radio_button.text())
-
-
-    def on_radio_value_changed_3(self, radio_button):
-        """Обработка выбора радиокнопки"""
-        if radio_button.isChecked():
-            self.radio_3.setChecked(True)
-            # Обновляем метку с выбранным значением
-            self.label.setText(f"Выбрано3: {radio_button.text()}")
+            self.label.setText(f"Выбрано: {radio_button.text()}")
             # Уведомляем ноду, что значение изменилось
             self.node.update_logic(radio_button.text())
 
@@ -517,6 +497,7 @@ class CalcNodeTURN1(Node):
     icon = ""
     op_code = 0
     op_title = "Undefined"
+    radbut = 1
     content_label = ""
     content_label_objname = "calc_node_bg"
 
@@ -528,6 +509,7 @@ class CalcNodeTURN1(Node):
 
         self.content = CalcContent_TURN_1(self)
         self.value = None
+        self.radbut = None
 
         # it's really important to mark all nodes Dirty by default
         self.markDirty()
@@ -610,7 +592,6 @@ class CalcNodeTURN1(Node):
         self.markDirty()
         self.eval()
 
-
     def serialize(self):
         res = super().serialize()
         res['op_code'] = self.__class__.op_code
@@ -623,9 +604,16 @@ class CalcNodeTURN1(Node):
         print("Deserialized CalcNode '%s'" % self.__class__.__name__, "res:", res)
         try:
             value = data['value']
-            radbut = data["radbut"]
+            radbut = data['radbut']
+            print(f"----------RADBUT!!!{radbut}")
+            if radbut == 1:
+                self.content.radio_1.setChecked(True)
+            if radbut == 2:
+                self.content.radio_2.setChecked(True)
+            if radbut == 3:
+                self.content.radio_3.setChecked(True)
+
             self.radbut = radbut
-            #self.update_logic(self.radbut)
             self.value = value
             return True & res
         except Exception as e:
