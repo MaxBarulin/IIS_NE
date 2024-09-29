@@ -46,7 +46,6 @@ class CalcNode_Group3(CalcNodeTURN1):
     icon = path_img_mul
     op_code = OP_NODE_TURN1
     op_title = "ДЛЯ ТЕСТА"
-    radbut = 3
     content_label = "нач Д"
     content_label_1 = "кон Д"
     content_label_2 = "asd"
