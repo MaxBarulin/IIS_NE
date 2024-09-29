@@ -42,14 +42,15 @@ path_img_com = f"{put}\\icons\\{open_img_com}"
 
 
 @register_node(OP_NODE_TURN1)
-class CalcNode_Group2(CalcNodeTURN1):
+class CalcNode_Group3(CalcNodeTURN1):
     icon = path_img_mul
     op_code = OP_NODE_TURN1
     op_title = "ДЛЯ ТЕСТА"
+    radbut = 3
     content_label = "нач Д"
     content_label_1 = "кон Д"
     content_label_2 = "asd"
-    content_label_objname = ("calc_node_TURN1")
+    content_label_objname = "calc_node_TURN1"
 
     def __init__(self, scene):
         super().__init__(scene)

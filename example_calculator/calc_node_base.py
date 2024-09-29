@@ -555,7 +555,7 @@ class CalcNodeTURN1(Node):
             self.markInvalid()
             self.markDescendantsDirty()
             self.grNode.setToolTip("Connect all inputs")
-            self.eval()
+            #self.eval()
             return None
 
         else:
@@ -643,7 +643,6 @@ class CalcNodeTURN1(Node):
         print("Выполнение логики для значения 2")
         result = "2223"
         return self.value
-
 
     def logic_3(self):
         """Логика для значения 1.6"""
