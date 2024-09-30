@@ -35,7 +35,7 @@
             ],
             "content": {},
             "op_code": 26,
-            "value": 4.0,
+            "value": 3.0,
             "radbut": 3.0
         },
         {
@@ -74,7 +74,7 @@
                 }
             ],
             "content": {
-                "value": "2"
+                "value": "1"
             },
             "op_code": 1
         },

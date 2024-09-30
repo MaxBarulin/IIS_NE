@@ -1,14 +1,15 @@
+from PyQt5.QtWidgets import QVBoxLayout, QLabel, QButtonGroup, QRadioButton
 from qtpy.QtWidgets import QLineEdit, QComboBox, QPlainTextEdit
 from qtpy.QtCore import Qt, QRect
 from example_calculator.calc_conf import register_node, OP_NODE_INPUT, OP_NODE_INPUT_1, OP_NODE_INPUT_2, \
-    OP_NODE_INPUT_TEXT, OP_NODE_INPUT_3, OP_NODE_INPUT_5
+    OP_NODE_INPUT_TEXT, OP_NODE_INPUT_3, OP_NODE_INPUT_5, OP_NODE_TEST
 from example_calculator.calc_node_base import CalcNode, CalcTable2, CalcTable3, CalcGraphicsNode, \
     CalcGraphicsNodeComboBox, CalcGraphicsNodeComboBox_2, CalcGraphicsText, CalcNodeText, CalcNodeResult, CalcTable5, \
-    CalcGraphicsNodeComboBox_4
+    CalcGraphicsNodeComboBox_4, CalcGraphicsNodeTest, CalcNodeResultTest
 from nodeeditor.node_content_widget import QDMNodeContentWidget
 from nodeeditor.utils import dumpException
 import os
-from example_calculator.table import create_tables, create_tables_turning
+from example_calculator.table import create_tables, create_tables_turning, create_tables_turning_other
 
 open_img_in = "in_1.ico"
 open_img_tab = "table.ico"
@@ -46,6 +47,67 @@ QComboBox QAbstractItemView {
     selection-background-color: #dfdfdf;
 }
 '''
+class CalcInputContentTest(QDMNodeContentWidget):
+    def initUI(self):
+        layout = QVBoxLayout()
+
+        # Метка для отображения текущего значения
+        self.label = QLabel("Выбрано: 1")
+        layout.addWidget(self.label)
+        self.value = 1
+        self.ra = 1
+        # Создаем QButtonGroup для того, чтобы обеспечить выбор только одной кнопки
+        self.radio_group = QButtonGroup(self)
+        self.radio_1 = QRadioButton("1")
+        self.radio_2 = QRadioButton("2")
+        self.radio_3 = QRadioButton("3")
+        # self.radio_group.buttonClicked.connect(self.on_radio_value_changed)
+        # Создаем три радиокнопки
+
+        # Добавляем радиокнопки в группу
+        self.radio_group.addButton(self.radio_1)
+        self.radio_group.addButton(self.radio_2)
+        self.radio_group.addButton(self.radio_3)
+
+        self.radio_1.setChecked(True)
+
+        layout.addWidget(self.radio_1)
+        layout.addWidget(self.radio_2)
+        layout.addWidget(self.radio_3)
+
+        self.setLayout(layout)
+
+    def serialize(self):
+        res = super().serialize()
+        if self.radio_1.isChecked():
+            self.radio_1.setChecked(True)
+            #self.label.setText(f"Выбрано: 1")
+            self.ra = 1
+        if self.radio_2.isChecked():
+            self.radio_2.setChecked(True)
+            #self.label.setText(f"Выбрано: 2")
+            self.ra = 2
+        if self.radio_3.isChecked():
+            self.radio_3.setChecked(True)
+            #self.label.setText(f"Выбрано: 3")
+            self.ra = 3
+        res['ra'] = self.ra
+        return res
+
+    def deserialize(self, data, hashmap={}):
+        res = super().deserialize(data, hashmap)
+        try:
+            ra = data['ra']
+            if ra == 1:
+                self.radio_1.setChecked(True)
+            if ra == 2:
+                self.radio_2.setChecked(True)
+            if ra == 3:
+                self.radio_3.setChecked(True)
+            return True & res
+        except Exception as e:
+            dumpException(e)
+        return res
 
 
 class CalcInputContent(QDMNodeContentWidget):
@@ -295,6 +357,146 @@ class CalcInputContent_4(QDMNodeContentWidget):
         except Exception as e:
             dumpException(e)
         return res
+
+
+@register_node(OP_NODE_TEST)
+class CalcNode_Test(CalcNodeResultTest):
+    icon = path_img_in
+    op_code = OP_NODE_TEST
+    op_title = "TEST"
+    content_label_objname = "calc_node_TEST"
+
+    def __init__(self, scene):
+        super().__init__(scene, inputs=[2, 2], outputs=[1])
+        self.eval()
+
+    def initInnerClasses(self):
+        self.content = CalcInputContentTest(self)
+        self.grNode = CalcGraphicsNodeTest(self)
+        self.content.radio_1.toggled.connect(self.onInputChanged)
+        self.content.radio_2.toggled.connect(self.onInputChanged)
+        self.content.radio_3.toggled.connect(self.onInputChanged)
+
+    def evalImplementation(self):
+        i1 = self.getInput(0)
+        i2 = self.getInput(1)
+        print(f"----+++++{self.content.ra}")
+
+        if i1 is None or i2 is None:
+            self.markInvalid()
+            self.markDescendantsDirty()
+            self.grNode.setToolTip("Connect all inputs")
+            return None
+
+        else:
+            if self.content.radio_1.isChecked():
+                self.content.label.setText("12.5")
+                print(f"-------12.5")
+            if self.content.radio_2.isChecked():
+                self.content.label.setText("6.3")
+                print(f"-------6.3")
+            if self.content.radio_3.isChecked():
+                self.content.label.setText("1.6")
+                print(f"-------1.6")
+
+            W = float(i1.eval())
+            E = float(i2.eval())
+
+            if 0 < W <= 20:
+                W = 0
+            if 20 < W <= 50:
+                W = 1
+            if 50 < W <= 100:
+                W = 2
+            if 100 < W <= 150:
+                W = 3
+            if 150 < W <= 200:
+                W = 4
+            if 200 < W <= 250:
+                W = 5
+            if 250 < W <= 300:
+                W = 6
+            if 300 < W <= 400:
+                W = 7
+            if 400 < W <= 500:
+                W = 8
+            if 750 < W <= 750:
+                W = 9
+            if 750 < W <= 1000:
+                W = 10
+            if 1000 < W <= 1250:
+                W = 11
+            if 1250 < W <= 1500:
+                W = 12
+            if 1500 < W <= 2000:
+                W = 13
+
+            if 0 < E <= 10:
+                E = 0
+            if 10 < E <= 20:
+                E = 1
+            if 20 < E <= 50:
+                E = 2
+            if 50 < E <= 100:
+                E = 3
+            if 100 < E <= 200:
+                E = 4
+            if 200 < E <= 300:
+                E = 5
+            if 300 < E <= 400:
+                E = 6
+            if 400 < E <= 500:
+                E = 7
+            if 500 < E <= 600:
+                E = 8
+            if 600 < E <= 800:
+                E = 9
+            if 800 < E <= 1000:
+                E = 10
+            if 1000 < E <= 1200:
+                E = 11
+            if 1200 < E <= 1600:
+                E = 12
+            if 1600 < E <= 2000:
+                E = 13
+            if 2000 < E <= 2500:
+                E = 14
+            if 2500 < E <= 3000:
+                E = 15
+            if 3000 < E <= 4000:
+                E = 16
+            if 4000 < E <= 5000:
+                E = 17
+            if 5000 < E <= 6000:
+                E = 18
+            if 7000 < E <= 8000:
+                E = 19
+
+            table = create_tables_turning_other()
+            s = table[0]
+            a = s.get("k1")
+            #res_1 = table.get(u_value, "Р-")
+            #res = res_1.get(u_value_1, "Р-")
+            print(a)
+
+
+
+
+            print(W)
+            print(E)
+
+            self.value = W + E
+            self.markDirty(False)
+            self.markInvalid(False)
+
+            self.markDescendantsInvalid(False)
+            self.markDescendantsDirty()
+
+            self.grNode.setToolTip("")
+
+            self.evalChildren()
+
+            return self.value
 
 
 @register_node(OP_NODE_INPUT)
