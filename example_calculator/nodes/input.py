@@ -50,6 +50,16 @@ QComboBox QAbstractItemView {
 class CalcInputContentTest(QDMNodeContentWidget):
     def initUI(self):
         layout = QVBoxLayout()
+        lbl = QLabel(self.node.content_label, self)
+        lbl.setObjectName(self.node.content_label_objname)
+        lbl.setGeometry(8, 4, 100, 14)
+        lbl_1 = QLabel(self.node.content_label_1, self)
+        lbl_1.setObjectName(self.node.content_label_objname)
+        lbl_1.setGeometry(8, 26, 100, 14)
+        lbl_2 = QLabel(self.node.content_label_2, self)
+        lbl_2.setObjectName(self.node.content_label_objname)
+        lbl_2.setGeometry(104, 15, 50, 14)
+        lbl_2.setAlignment(Qt.AlignRight | Qt.AlignCenter)
 
         # Метка для отображения текущего значения
         self.label = QLabel("Выбрано: 1")
@@ -364,6 +374,9 @@ class CalcNode_Test(CalcNodeResultTest):
     icon = path_img_in
     op_code = OP_NODE_TEST
     op_title = "TEST"
+    content_label = "нач Д"
+    content_label_1 = "кон Д"
+    content_label_2 = "asd"
     content_label_objname = "calc_node_TEST"
 
     def __init__(self, scene):
@@ -403,33 +416,35 @@ class CalcNode_Test(CalcNodeResultTest):
             E = float(i2.eval())
 
             if 0 < W <= 20:
-                W = 0
-            if 20 < W <= 50:
-                W = 1
-            if 50 < W <= 100:
-                W = 2
-            if 100 < W <= 150:
-                W = 3
-            if 150 < W <= 200:
-                W = 4
-            if 200 < W <= 250:
-                W = 5
-            if 250 < W <= 300:
-                W = 6
-            if 300 < W <= 400:
-                W = 7
-            if 400 < W <= 500:
-                W = 8
-            if 750 < W <= 750:
-                W = 9
-            if 750 < W <= 1000:
-                W = 10
-            if 1000 < W <= 1250:
-                W = 11
-            if 1250 < W <= 1500:
-                W = 12
-            if 1500 < W <= 2000:
-                W = 13
+                W = "20.3"
+            elif 20 < W <= 50:
+                W = "50.3"
+            elif 50 < W <= 100:
+                W = "100.3"
+            elif 100 < W <= 150:
+                W = "150.3"
+            elif 150 < W <= 200:
+                W = "200.3"
+            elif 200 < W <= 250:
+                W = "250.3"
+            elif 250 < W <= 300:
+                W = "300.3"
+            elif 300 < W <= 400:
+                W = "400.3"
+            elif 400 < W <= 500:
+                W = "500.3"
+            elif 500 < W <= 750:
+                W = "750.3"
+            elif 750 < W <= 1000:
+                W = "1000.3"
+            elif 1000 < W <= 1250:
+                W = "1250.3"
+            elif 1250 < W <= 1500:
+                W = "1500.3"
+            elif 1500 < W <= 2000:
+                W = "2000.3"
+
+            print(f"---{W}")
 
             if 0 < E <= 10:
                 E = 0
@@ -449,43 +464,47 @@ class CalcNode_Test(CalcNodeResultTest):
                 E = 7
             if 500 < E <= 600:
                 E = 8
-            if 600 < E <= 800:
+            if 600 < E <= 700:
                 E = 9
-            if 800 < E <= 1000:
+            if 700 < E <= 800:
                 E = 10
-            if 1000 < E <= 1200:
+            if 800 < E <= 1000:
                 E = 11
-            if 1200 < E <= 1600:
+            if 1000 < E <= 1200:
                 E = 12
-            if 1600 < E <= 2000:
+            if 1200 < E <= 1600:
                 E = 13
-            if 2000 < E <= 2500:
+            if 1600 < E <= 2000:
                 E = 14
-            if 2500 < E <= 3000:
+            if 2000 < E <= 2500:
                 E = 15
-            if 3000 < E <= 4000:
+            if 2500 < E <= 3000:
                 E = 16
-            if 4000 < E <= 5000:
+            if 3000 < E <= 4000:
                 E = 17
-            if 5000 < E <= 6000:
+            if 4000 < E <= 5000:
                 E = 18
-            if 7000 < E <= 8000:
+            if 5000 < E <= 6000:
                 E = 19
+            if 7000 < E <= 8000:
+                E = 20
+
+            print(f"---{E}")
 
             table = create_tables_turning_other()
             s = table[0]
             a = s.get("k1")
-            #res_1 = table.get(u_value, "Р-")
-            #res = res_1.get(u_value_1, "Р-")
-            print(a)
+            res_1 = a.get(str(W), "Р-")
+            res = res_1[E]
+            print(f"rrrrrrrrrr{res}")
 
 
 
 
-            print(W)
-            print(E)
+            #print(W)
+            #print(E)
 
-            self.value = W + E
+            self.value = float(res)
             self.markDirty(False)
             self.markInvalid(False)
 
