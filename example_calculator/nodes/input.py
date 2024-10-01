@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QVBoxLayout, QLabel, QButtonGroup, QRadioButton
+from PyQt5.QtWidgets import QVBoxLayout, QLabel, QButtonGroup, QRadioButton, QSpacerItem, QSizePolicy, QHBoxLayout
 from qtpy.QtWidgets import QLineEdit, QComboBox, QPlainTextEdit
 from qtpy.QtCore import Qt, QRect
 from example_calculator.calc_conf import register_node, OP_NODE_INPUT, OP_NODE_INPUT_1, OP_NODE_INPUT_2, \
@@ -49,7 +49,7 @@ QComboBox QAbstractItemView {
 '''
 class CalcInputContentTest(QDMNodeContentWidget):
     def initUI(self):
-        layout = QVBoxLayout()
+        # Не используем макет для этих элементов, а позиционируем их вручную
         lbl = QLabel(self.node.content_label, self)
         lbl.setObjectName(self.node.content_label_objname)
         lbl.setGeometry(8, 4, 100, 14)
@@ -62,17 +62,16 @@ class CalcInputContentTest(QDMNodeContentWidget):
         lbl_2.setAlignment(Qt.AlignRight | Qt.AlignCenter)
 
         # Метка для отображения текущего значения
-        self.label = QLabel("Выбрано: 1")
-        layout.addWidget(self.label)
+        self.label = QLabel("1.6", self)
+        self.label.setGeometry(100, 13, 50, 20)  # Сдвигаем вверх на 4 пикселя
         self.value = 1
         self.ra = 1
-        # Создаем QButtonGroup для того, чтобы обеспечить выбор только одной кнопки
+
+        # Создаем QButtonGroup для обеспечения выбора только одной кнопки
         self.radio_group = QButtonGroup(self)
-        self.radio_1 = QRadioButton("1")
-        self.radio_2 = QRadioButton("2")
-        self.radio_3 = QRadioButton("3")
-        # self.radio_group.buttonClicked.connect(self.on_radio_value_changed)
-        # Создаем три радиокнопки
+        self.radio_1 = QRadioButton("1", self)
+        self.radio_2 = QRadioButton("2", self)
+        self.radio_3 = QRadioButton("3", self)
 
         # Добавляем радиокнопки в группу
         self.radio_group.addButton(self.radio_1)
@@ -81,11 +80,14 @@ class CalcInputContentTest(QDMNodeContentWidget):
 
         self.radio_1.setChecked(True)
 
-        layout.addWidget(self.radio_1)
-        layout.addWidget(self.radio_2)
-        layout.addWidget(self.radio_3)
+        # Позиционируем радиокнопки вручную и сдвигаем вверх на 4 пикселя
+        y_start = -2  # Начальная позиция по оси Y
+        spacing = 16  # Расстояние между радиокнопками
+        for i, radio_button in enumerate([self.radio_1, self.radio_2, self.radio_3]):
+            radio_button.setGeometry(70, y_start + i * spacing, 50, 20)
 
-        self.setLayout(layout)
+        # Устанавливаем макет только если у вас есть другие элементы, требующие макета
+        # self.setLayout(layout)
 
     def serialize(self):
         res = super().serialize()
@@ -373,10 +375,10 @@ class CalcInputContent_4(QDMNodeContentWidget):
 class CalcNode_Test(CalcNodeResultTest):
     icon = path_img_in
     op_code = OP_NODE_TEST
-    op_title = "TEST"
-    content_label = "нач Д"
-    content_label_1 = "кон Д"
-    content_label_2 = "asd"
+    op_title = "Точение"
+    content_label = "Диаметр"
+    content_label_1 = "Длина"
+    content_label_2 = "Н/Ч"
     content_label_objname = "calc_node_TEST"
 
     def __init__(self, scene):
