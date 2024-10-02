@@ -92,7 +92,44 @@
                 }
             ],
             "content": {
-                "ra": 3
+                "ra": 1,
+                "additional_ra": "3"
+            },
+            "op_code": 27
+        },
+        {
+            "id": 130027208,
+            "title": "\u0422\u043e\u0447\u0435\u043d\u0438\u0435",
+            "pos_x": -10.0,
+            "pos_y": 202.0,
+            "inputs": [
+                {
+                    "id": 130027328,
+                    "index": 0,
+                    "multi_edges": false,
+                    "position": 2,
+                    "socket_type": 2
+                },
+                {
+                    "id": 130027352,
+                    "index": 1,
+                    "multi_edges": false,
+                    "position": 2,
+                    "socket_type": 2
+                }
+            ],
+            "outputs": [
+                {
+                    "id": 130027376,
+                    "index": 0,
+                    "multi_edges": true,
+                    "position": 5,
+                    "socket_type": 1
+                }
+            ],
+            "content": {
+                "ra": 1,
+                "additional_ra": null
             },
             "op_code": 27
         }

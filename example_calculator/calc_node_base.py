@@ -28,7 +28,7 @@ class CalcGraphicsNodeTest(QDMGraphicsNode):
     def initSizes(self):
         super().initSizes()
         self.width = 200
-        self.height = 90
+        self.height = 130
         self.edge_roundness = 0
         self.edge_padding = 0
         self.title_horizontal_padding = 8
