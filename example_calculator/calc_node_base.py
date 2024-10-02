@@ -27,8 +27,8 @@ path_img_icons = f'{put}\\nodes\\icons\\{open_img_icons}'
 class CalcGraphicsNodeTest(QDMGraphicsNode):
     def initSizes(self):
         super().initSizes()
-        self.width = 300
-        self.height = 230
+        self.width = 200
+        self.height = 110
         self.edge_roundness = 0
         self.edge_padding = 0
         self.title_horizontal_padding = 8
