@@ -47,15 +47,18 @@ QComboBox QAbstractItemView {
     selection-background-color: #dfdfdf;
 }
 '''
+
 class CalcInputContentTest(QDMNodeContentWidget):
     def initUI(self):
-        # Не используем макет для этих элементов, а позиционируем их вручную
+        # Основные метки
         lbl = QLabel(self.node.content_label, self)
         lbl.setObjectName(self.node.content_label_objname)
         lbl.setGeometry(8, 4, 100, 14)
+
         lbl_1 = QLabel(self.node.content_label_1, self)
         lbl_1.setObjectName(self.node.content_label_objname)
         lbl_1.setGeometry(8, 26, 100, 14)
+
         lbl_2 = QLabel(self.node.content_label_2, self)
         lbl_2.setObjectName(self.node.content_label_objname)
         lbl_2.setGeometry(104, 15, 50, 14)
@@ -64,6 +67,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
         # Метка для отображения текущего значения
         self.label = QLabel("1.6", self)
         self.label.setGeometry(100, 13, 50, 20)  # Сдвигаем вверх на 4 пикселя
+
         self.value = 1
         self.ra = 1
 
@@ -86,40 +90,188 @@ class CalcInputContentTest(QDMNodeContentWidget):
         for i, radio_button in enumerate([self.radio_1, self.radio_2, self.radio_3]):
             radio_button.setGeometry(70, y_start + i * spacing, 50, 20)
 
-        # Устанавливаем макет только если у вас есть другие элементы, требующие макета
-        # self.setLayout(layout)
+        # Создаём дополнительные радиокнопки заранее и скрываем их
+        self.create_additional_radios()
+
+        # Подключаем сигнал изменения основной радиокнопки к обработчику
+        self.radio_group.buttonClicked.connect(self.on_main_radio_changed)
+
+    def create_additional_radios(self):
+        """Создаёт все дополнительные радиокнопки с фиксированным позиционированием."""
+        # Дополнительные радиокнопки для опции 1 (4 радиокнопки)
+        self.additional_radio_1_1 = QRadioButton("Доп. 1.1", self)
+        self.additional_radio_1_1.setGeometry(130, -2, 100, 20)
+        self.additional_radio_1_1.hide()
+
+        self.additional_radio_1_2 = QRadioButton("Доп. 1.2", self)
+        self.additional_radio_1_2.setGeometry(130, 20, 100, 20)
+        self.additional_radio_1_2.hide()
+
+        self.additional_radio_1_3 = QRadioButton("Доп. 1.3", self)
+        self.additional_radio_1_3.setGeometry(130, 42, 100, 20)
+        self.additional_radio_1_3.hide()
+
+        self.additional_radio_1_4 = QRadioButton("Доп. 1.4", self)  # Новая радиокнопка
+        self.additional_radio_1_4.setGeometry(130, 64, 100, 20)  # Позиция для 4-й кнопки
+        self.additional_radio_1_4.hide()
+
+        # Дополнительные радиокнопки для опций 2 и 3 (по 1 радиокнопке каждая)
+        self.additional_radio_2 = QRadioButton("Доп. 2.1", self)
+        self.additional_radio_2.setGeometry(130, -2, 100, 20)
+        self.additional_radio_2.hide()
+
+        self.additional_radio_3 = QRadioButton("Доп. 3.1", self)
+        self.additional_radio_3.setGeometry(130, -2, 100, 20)
+        self.additional_radio_3.hide()
+
+        # Создаём группы для дополнительных радиокнопок
+        self.additional_group_1 = QButtonGroup(self)
+        self.additional_group_1.addButton(self.additional_radio_1_1)
+        self.additional_group_1.addButton(self.additional_radio_1_2)
+        self.additional_group_1.addButton(self.additional_radio_1_3)
+        self.additional_group_1.addButton(self.additional_radio_1_4)  # Добавляем новую кнопку
+
+        self.additional_group_2 = QButtonGroup(self)
+        self.additional_group_2.addButton(self.additional_radio_2)
+
+        self.additional_group_3 = QButtonGroup(self)
+        self.additional_group_3.addButton(self.additional_radio_3)
+
+        # Подключаем сигналы изменения дополнительных радиокнопок
+        self.additional_group_1.buttonClicked.connect(self.on_additional_radio_changed)
+        self.additional_group_2.buttonClicked.connect(self.on_additional_radio_changed)
+        self.additional_group_3.buttonClicked.connect(self.on_additional_radio_changed)
+
+    def update_additional_radios(self, selected_option):
+        """
+        Обновляет видимость дополнительных радиокнопок в зависимости от выбранной основной опции.
+        :param selected_option: Значение выбранной основной радиокнопки (1, 2 или 3)
+        """
+        # Скрываем все дополнительные радиокнопки
+        self.hide_all_additional_radios()
+
+        if selected_option == 1:
+            # Показываем четыре дополнительные радиокнопки для опции 1
+            self.additional_radio_1_1.show()
+            self.additional_radio_1_2.show()
+            self.additional_radio_1_3.show()
+            self.additional_radio_1_4.show()
+        elif selected_option == 2:
+            # Показываем одну дополнительную радиокнопку для опции 2
+            self.additional_radio_2.show()
+        elif selected_option == 3:
+            # Показываем одну дополнительную радиокнопку для опции 3
+            self.additional_radio_3.show()
+
+    def hide_all_additional_radios(self):
+        """Скрывает все дополнительные радиокнопки."""
+        self.additional_radio_1_1.hide()
+        self.additional_radio_1_2.hide()
+        self.additional_radio_1_3.hide()
+        self.additional_radio_1_4.hide()  # Скрываем новую радиокнопку
+        self.additional_radio_2.hide()
+        self.additional_radio_3.hide()
+
+    def get_selected_additional_option(self):
+        """
+        Возвращает текст выбранной дополнительной радиокнопки или None, если ничего не выбрано.
+        """
+        # Проверяем группу 1
+        for button in self.additional_group_1.buttons():
+            if button.isChecked():
+                return button.text()
+        # Проверяем группу 2
+        for button in self.additional_group_2.buttons():
+            if button.isChecked():
+                return button.text()
+        # Проверяем группу 3
+        for button in self.additional_group_3.buttons():
+            if button.isChecked():
+                return button.text()
+        return None
 
     def serialize(self):
         res = super().serialize()
         if self.radio_1.isChecked():
-            self.radio_1.setChecked(True)
-            #self.label.setText(f"Выбрано: 1")
             self.ra = 1
-        if self.radio_2.isChecked():
-            self.radio_2.setChecked(True)
-            #self.label.setText(f"Выбрано: 2")
+        elif self.radio_2.isChecked():
             self.ra = 2
-        if self.radio_3.isChecked():
-            self.radio_3.setChecked(True)
-            #self.label.setText(f"Выбрано: 3")
+        elif self.radio_3.isChecked():
             self.ra = 3
         res['ra'] = self.ra
+
+        # Сохраняем состояние дополнительных радиокнопок
+        additional_selected = self.get_selected_additional_option()
+        res['additional_ra'] = additional_selected
         return res
 
     def deserialize(self, data, hashmap={}):
         res = super().deserialize(data, hashmap)
         try:
-            ra = data['ra']
+            ra = data.get('ra', 1)
             if ra == 1:
                 self.radio_1.setChecked(True)
-            if ra == 2:
+            elif ra == 2:
                 self.radio_2.setChecked(True)
-            if ra == 3:
+            elif ra == 3:
                 self.radio_3.setChecked(True)
+
+            self.update_additional_radios(ra)
+
+            # Восстанавливаем состояние дополнительных радиокнопок
+            additional_ra = data.get('additional_ra', None)
+            if additional_ra:
+                for group in [self.additional_group_1, self.additional_group_2, self.additional_group_3]:
+                    for button in group.buttons():
+                        if button.text() == additional_ra:
+                            button.setChecked(True)
+                            break
+
             return True & res
         except Exception as e:
             dumpException(e)
         return res
+
+    def on_main_radio_changed(self):
+        """
+        Обработчик изменения основной радиокнопки.
+        """
+        if self.radio_1.isChecked():
+            selected = 1
+        elif self.radio_2.isChecked():
+            selected = 2
+        elif self.radio_3.isChecked():
+            selected = 3
+        else:
+            selected = None
+
+        self.update_additional_radios(selected)
+        # Очистить выбор в дополнительных радиокнопках при смене основной опции
+        self.clear_additional_selection()
+        # Обновить метку или выполнить другие действия
+        if selected == 1:
+            self.label.setText("Опция 1 выбрана")
+        elif selected == 2:
+            self.label.setText("Опция 2 выбрана")
+        elif selected == 3:
+            self.label.setText("Опция 3 выбрана")
+        # Вызов eval() у узла, а не у содержимого
+        self.node.eval()
+
+    def on_additional_radio_changed(self):
+        """
+        Обработчик изменения дополнительной радиокнопки.
+        """
+        # Обновляем состояние узла при изменении дополнительной радиокнопки
+        self.node.eval()
+
+    def clear_additional_selection(self):
+        """Снимает выбор со всех дополнительных радиокнопок."""
+        for group in [self.additional_group_1, self.additional_group_2, self.additional_group_3]:
+            group.setExclusive(False)
+            for button in group.buttons():
+                button.setChecked(False)
+            group.setExclusive(True)
 
 
 class CalcInputContent(QDMNodeContentWidget):
@@ -388,9 +540,23 @@ class CalcNode_Test(CalcNodeResultTest):
     def initInnerClasses(self):
         self.content = CalcInputContentTest(self)
         self.grNode = CalcGraphicsNodeTest(self)
-        self.content.radio_1.toggled.connect(self.onInputChanged)
-        self.content.radio_2.toggled.connect(self.onInputChanged)
-        self.content.radio_3.toggled.connect(self.onInputChanged)
+
+        # Дополнительные радиокнопки уже подключены внутри CalcInputContentTest
+        # Поэтому дополнительного подключения не требуется
+
+    def onInputChanged(self):
+        """
+        Обработчик изменения выбора радиокнопок.
+        Здесь можно добавить дополнительную логику, если необходимо.
+        """
+        # Например, можно обновить label или выполнить другие действия
+        if self.content.radio_1.isChecked():
+            self.content.label.setText("Опция 1 выбрана")
+        elif self.content.radio_2.isChecked():
+            self.content.label.setText("Опция 2 выбрана")
+        elif self.content.radio_3.isChecked():
+            self.content.label.setText("Опция 3 выбрана")
+        self.eval()
 
     def evalImplementation(self):
         i1 = self.getInput(0)
@@ -407,16 +573,24 @@ class CalcNode_Test(CalcNodeResultTest):
             if self.content.radio_1.isChecked():
                 self.content.label.setText("12.5")
                 print(f"-------12.5")
-            if self.content.radio_2.isChecked():
+            elif self.content.radio_2.isChecked():
                 self.content.label.setText("6.3")
                 print(f"-------6.3")
-            if self.content.radio_3.isChecked():
+            elif self.content.radio_3.isChecked():
                 self.content.label.setText("1.6")
                 print(f"-------1.6")
+
+            # Получаем выбранную дополнительную опцию
+            additional_value = self.content.get_selected_additional_option()
+            print(f"Дополнительная опция: {additional_value}")
+
+            # Продолжение вашей логики расчётов...
+            # Например, использование additional_value в расчётах
 
             W = float(i1.eval())
             E = float(i2.eval())
 
+            # Ваши преобразования W и E
             if 0 < W <= 20:
                 W = "20.3"
             elif 20 < W <= 50:
@@ -450,45 +624,45 @@ class CalcNode_Test(CalcNodeResultTest):
 
             if 0 < E <= 10:
                 E = 0
-            if 10 < E <= 20:
+            elif 10 < E <= 20:
                 E = 1
-            if 20 < E <= 50:
+            elif 20 < E <= 50:
                 E = 2
-            if 50 < E <= 100:
+            elif 50 < E <= 100:
                 E = 3
-            if 100 < E <= 200:
+            elif 100 < E <= 200:
                 E = 4
-            if 200 < E <= 300:
+            elif 200 < E <= 300:
                 E = 5
-            if 300 < E <= 400:
+            elif 300 < E <= 400:
                 E = 6
-            if 400 < E <= 500:
+            elif 400 < E <= 500:
                 E = 7
-            if 500 < E <= 600:
+            elif 500 < E <= 600:
                 E = 8
-            if 600 < E <= 700:
+            elif 600 < E <= 700:
                 E = 9
-            if 700 < E <= 800:
+            elif 700 < E <= 800:
                 E = 10
-            if 800 < E <= 1000:
+            elif 800 < E <= 1000:
                 E = 11
-            if 1000 < E <= 1200:
+            elif 1000 < E <= 1200:
                 E = 12
-            if 1200 < E <= 1600:
+            elif 1200 < E <= 1600:
                 E = 13
-            if 1600 < E <= 2000:
+            elif 1600 < E <= 2000:
                 E = 14
-            if 2000 < E <= 2500:
+            elif 2000 < E <= 2500:
                 E = 15
-            if 2500 < E <= 3000:
+            elif 2500 < E <= 3000:
                 E = 16
-            if 3000 < E <= 4000:
+            elif 3000 < E <= 4000:
                 E = 17
-            if 4000 < E <= 5000:
+            elif 4000 < E <= 5000:
                 E = 18
-            if 5000 < E <= 6000:
+            elif 5000 < E <= 6000:
                 E = 19
-            if 7000 < E <= 8000:
+            elif 7000 < E <= 8000:
                 E = 20
 
             print(f"---{E}")
@@ -498,13 +672,8 @@ class CalcNode_Test(CalcNodeResultTest):
             a = s.get("k1")
             res_1 = a.get(str(W), "Р-")
             res = res_1[E]
+
             print(f"rrrrrrrrrr{res}")
-
-
-
-
-            #print(W)
-            #print(E)
 
             self.value = float(res)
             self.markDirty(False)
