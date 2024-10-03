@@ -65,7 +65,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
         lbl_2.setAlignment(Qt.AlignRight | Qt.AlignCenter)
 
         # Метка для отображения текущего значения
-        self.label = QLabel("Ra12.5 i3", self)
+        self.label = QLabel("12.5 + 3", self)
         self.label.setGeometry(70, -2, 150, 20)  # Увеличен размер для отображения текста
 
         self.value = 1
@@ -204,7 +204,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
             )
 
         # Обновляем текст метки
-        self.label.setText(f"Ra{selected_main} i{additional_selected}")
+        self.label.setText(f"{selected_main} + {additional_selected}")
 
     def on_main_radio_changed(self):
         """
@@ -241,7 +241,6 @@ class CalcInputContentTest(QDMNodeContentWidget):
         for button in self.additional_group_3.buttons():
             if button.isChecked():
                 return button.text()
-        self.node.eval()
         return None
 
     def serialize(self):
@@ -565,7 +564,6 @@ class CalcNode_Test(CalcNodeResultTest):
         """
         Обработчик изменения выбора радиокнопок (основных и дополнительных).
         """
-        #
         # Обновляем метку отображения уже сделано в CalcInputContentTest
         # Поэтому здесь нужно просто вызвать перерасчёт
         self.eval()
@@ -582,23 +580,12 @@ class CalcNode_Test(CalcNodeResultTest):
             return None
 
         else:
-            if self.content.radio_1.isChecked():
-                self.content.label.setText("")
-                print(f"!")
-            elif self.content.radio_2.isChecked():
-                self.content.label.setText("")
-                print(f"!!")
-            elif self.content.radio_3.isChecked():
-                self.content.label.setText("")
-                print(f"!!!")
-
             # Получаем выбранную дополнительную опцию
-            self.eval()
             additional_value = self.content.get_selected_additional_option()
             print(f"Дополнительная опция: {additional_value}")
 
-            # Обновляем метку
-            self.content.update_label()
+            # Обновляем метку (уже сделано через сигналы)
+            # self.content.update_label()
 
             try:
                 W = float(i1.eval())
@@ -618,9 +605,9 @@ class CalcNode_Test(CalcNodeResultTest):
                 additional_multiplier = 1  # Значение по умолчанию, если дополнительное значение некорректно
 
             # Модифицируем W и E на основе additional_multiplier
-            W = W
-            E = E  # Пример изменения E
-            print(additional_multiplier)
+            W = W * additional_multiplier
+            E = E + additional_multiplier  # Пример изменения E
+
             print(f"--- W после преобразования: {W}")
             print(f"--- E после преобразования: {E}")
 
@@ -706,9 +693,6 @@ class CalcNode_Test(CalcNodeResultTest):
             s = table[0]
             a = s.get("k1")
             res_1 = a.get(str(W), "Р-")
-            # self.content.update_label()
-            # glub = self.content.label.text()
-            # glub.replace("12.5", '').replace("6.3", '').replace("1.6", '')
             res = res_1[E]
 
             print(f"rrrrrrrrrr{res}")
