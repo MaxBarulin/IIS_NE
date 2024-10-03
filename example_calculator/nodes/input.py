@@ -89,17 +89,10 @@ class CalcInputContentTest(QDMNodeContentWidget):
         spacing = 16  # Расстояние между радиокнопками
         for i, radio_button in enumerate([self.radio_1, self.radio_2, self.radio_3]):
             radio_button.setGeometry(70, y_start + i * spacing, 50, 20)
+            radio_button.clicked.connect(self.on_main_radio_changed)
 
         # Создаём дополнительные радиокнопки заранее
         self.create_additional_radios()
-
-        # Подключаем сигнал изменения основной радиокнопки к обработчику
-        self.radio_group.buttonClicked.connect(self.on_main_radio_changed)
-
-        # Подключаем сигналы дополнительных радиокнопок к обновлению метки
-        self.additional_group_1.buttonClicked.connect(self.update_label)
-        self.additional_group_2.buttonClicked.connect(self.update_label)
-        self.additional_group_3.buttonClicked.connect(self.update_label)
 
         # При инициализации устанавливаем дополнительные радиокнопки
         self.update_additional_radios(1)
@@ -110,24 +103,30 @@ class CalcInputContentTest(QDMNodeContentWidget):
         self.additional_radio_1_1 = QRadioButton("3", self)
         self.additional_radio_1_1.setGeometry(122, 18, 100, 20)
         self.additional_radio_1_1.setChecked(True)  # Выбираем по умолчанию
+        self.additional_radio_1_1.clicked.connect(self.on_additional_radio_changed)
 
         self.additional_radio_1_2 = QRadioButton("5", self)
         self.additional_radio_1_2.setGeometry(122, 34, 100, 20)
+        self.additional_radio_1_2.clicked.connect(self.on_additional_radio_changed)
 
         self.additional_radio_1_3 = QRadioButton("10", self)
         self.additional_radio_1_3.setGeometry(122, 50, 100, 20)
+        self.additional_radio_1_3.clicked.connect(self.on_additional_radio_changed)
 
         self.additional_radio_1_4 = QRadioButton("15", self)
         self.additional_radio_1_4.setGeometry(122, 66, 100, 20)
+        self.additional_radio_1_4.clicked.connect(self.on_additional_radio_changed)
 
         # Дополнительные радиокнопки для опций 2 и 3 (по 1 радиокнопке каждая)
         self.additional_radio_2 = QRadioButton("1", self)
         self.additional_radio_2.setGeometry(122, 18, 100, 20)
         self.additional_radio_2.setChecked(True)  # Выбираем по умолчанию
+        self.additional_radio_2.clicked.connect(self.on_additional_radio_changed)
 
         self.additional_radio_3 = QRadioButton("0.5", self)
         self.additional_radio_3.setGeometry(122, 18, 100, 20)
         self.additional_radio_3.setChecked(True)  # Выбираем по умолчанию
+        self.additional_radio_3.clicked.connect(self.on_additional_radio_changed)
 
         # Создаём группы для дополнительных радиокнопок
         self.additional_group_1 = QButtonGroup(self)
@@ -142,10 +141,11 @@ class CalcInputContentTest(QDMNodeContentWidget):
         self.additional_group_3 = QButtonGroup(self)
         self.additional_group_3.addButton(self.additional_radio_3)
 
-    def update_additional_radios(self, selected_option):
+    def update_additional_radios(self, selected_option, set_default_checked=True):
         """
         Обновляет видимость и выбор дополнительных радиокнопок в зависимости от выбранной основной опции.
         :param selected_option: Значение выбранной основной радиокнопки (1, 2 или 3)
+        :param set_default_checked: Если True, устанавливает первую дополнительную радиокнопку как выбранную по умолчанию
         """
         if selected_option == 1:
             self.additional_radio_1_1.show()
@@ -154,8 +154,8 @@ class CalcInputContentTest(QDMNodeContentWidget):
             self.additional_radio_1_4.show()
             self.additional_radio_2.hide()
             self.additional_radio_3.hide()
-
-            self.additional_radio_1_1.setChecked(True)  # Выбираем первую дополнительную радиокнопку по умолчанию
+            if set_default_checked:
+                self.additional_radio_1_1.setChecked(True)
         elif selected_option == 2:
             self.additional_radio_2.show()
             self.additional_radio_1_1.hide()
@@ -163,7 +163,8 @@ class CalcInputContentTest(QDMNodeContentWidget):
             self.additional_radio_1_3.hide()
             self.additional_radio_1_4.hide()
             self.additional_radio_3.hide()
-            self.additional_radio_2.setChecked(True)  # Выбираем дополнительную радиокнопку 2.1 по умолчанию
+            if set_default_checked:
+                self.additional_radio_2.setChecked(True)
         elif selected_option == 3:
             self.additional_radio_3.show()
             self.additional_radio_1_1.hide()
@@ -171,7 +172,8 @@ class CalcInputContentTest(QDMNodeContentWidget):
             self.additional_radio_1_3.hide()
             self.additional_radio_1_4.hide()
             self.additional_radio_2.hide()
-            self.additional_radio_3.setChecked(True)  # Выбираем дополнительную радиокнопку 3.1 по умолчанию
+            if set_default_checked:
+                self.additional_radio_3.setChecked(True)
 
         # Обновляем метку после изменения выбора
         self.update_label()
@@ -189,19 +191,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
             selected_main = "1.6"
 
         # Определяем выбранную дополнительную радиокнопку
-        additional_selected = ""
-        if self.radio_1.isChecked():
-            additional_selected = next(
-                (btn.text() for btn in self.additional_group_1.buttons() if btn.isChecked()), ""
-            )
-        elif self.radio_2.isChecked():
-            additional_selected = (
-                self.additional_radio_2.text() if self.additional_radio_2.isChecked() else ""
-            )
-        elif self.radio_3.isChecked():
-            additional_selected = (
-                self.additional_radio_3.text() if self.additional_radio_3.isChecked() else ""
-            )
+        additional_selected = self.get_selected_additional_option() or ""
 
         # Обновляем текст метки
         self.label.setText(f"{selected_main} + {additional_selected}")
@@ -221,7 +211,15 @@ class CalcInputContentTest(QDMNodeContentWidget):
 
         # Обновляем дополнительные радиокнопки при изменении основной
         self.update_additional_radios(selected)
+        self.update_label()
+        # Вызовите eval у узла для перерасчёта
+        self.node.eval()
 
+    def on_additional_radio_changed(self):
+        """
+        Обработчик изменения дополнительной радиокнопки.
+        """
+        self.update_label()
         # Вызовите eval у узла для перерасчёта
         self.node.eval()
 
@@ -229,18 +227,16 @@ class CalcInputContentTest(QDMNodeContentWidget):
         """
         Возвращает текст выбранной дополнительной радиокнопки или None, если ничего не выбрано.
         """
-        # Проверяем группу 1
-        for button in self.additional_group_1.buttons():
-            if button.isChecked():
-                return button.text()
-        # Проверяем группу 2
-        for button in self.additional_group_2.buttons():
-            if button.isChecked():
-                return button.text()
-        # Проверяем группу 3
-        for button in self.additional_group_3.buttons():
-            if button.isChecked():
-                return button.text()
+        if self.radio_1.isChecked():
+            for button in self.additional_group_1.buttons():
+                if button.isChecked():
+                    return button.text()
+        elif self.radio_2.isChecked():
+            if self.additional_radio_2.isChecked():
+                return self.additional_radio_2.text()
+        elif self.radio_3.isChecked():
+            if self.additional_radio_3.isChecked():
+                return self.additional_radio_3.text()
         return None
 
     def serialize(self):
@@ -262,24 +258,43 @@ class CalcInputContentTest(QDMNodeContentWidget):
         res = super().deserialize(data, hashmap)
         try:
             ra = data.get('ra', 1)
+
+            # Блокируем сигналы основных радиокнопок
+            self.radio_group.blockSignals(True)
             if ra == 1:
                 self.radio_1.setChecked(True)
             elif ra == 2:
                 self.radio_2.setChecked(True)
             elif ra == 3:
                 self.radio_3.setChecked(True)
+            self.radio_group.blockSignals(False)
 
-            self.update_additional_radios(ra)
-
-            # Восстанавливаем состояние дополнительных радиокнопок
             additional_ra = data.get('additional_ra', None)
-            if additional_ra:
-                for group in [self.additional_group_1, self.additional_group_2, self.additional_group_3]:
-                    for button in group.buttons():
-                        if button.text() == additional_ra:
-                            button.setChecked(True)
-                            break
 
+            # Обновляем дополнительные радиокнопки без установки значения по умолчанию
+            self.update_additional_radios(ra, set_default_checked=False)
+
+            # Блокируем сигналы дополнительных радиокнопок
+            if ra == 1:
+                for button in self.additional_group_1.buttons():
+                    if button.text() == additional_ra:
+                        button.blockSignals(True)
+                        button.setChecked(True)
+                        button.blockSignals(False)
+                        break
+            elif ra == 2:
+                self.additional_radio_2.blockSignals(True)
+                if self.additional_radio_2.text() == additional_ra:
+                    self.additional_radio_2.setChecked(True)
+                self.additional_radio_2.blockSignals(False)
+            elif ra == 3:
+                self.additional_radio_3.blockSignals(True)
+                if self.additional_radio_3.text() == additional_ra:
+                    self.additional_radio_3.setChecked(True)
+                self.additional_radio_3.blockSignals(False)
+
+            # Обновляем метку
+            self.update_label()
             return True & res
         except Exception as e:
             dumpException(e)
@@ -554,24 +569,11 @@ class CalcNode_Test(CalcNodeResultTest):
         self.grNode = CalcGraphicsNodeTest(self)
 
         # Подключаем сигнал изменения дополнительных радиокнопок к обработчику
-        self.content.additional_group_1.buttonClicked.connect(self.on_input_changed)
-        self.content.additional_group_2.buttonClicked.connect(self.on_input_changed)
-        self.content.additional_group_3.buttonClicked.connect(self.on_input_changed)
-
-        # Также основные радиокнопки уже подключены внутри CalcInputContentTest
-
-    def on_input_changed(self):
-        """
-        Обработчик изменения выбора радиокнопок (основных и дополнительных).
-        """
-        # Обновляем метку отображения уже сделано в CalcInputContentTest
-        # Поэтому здесь нужно просто вызвать перерасчёт
-        self.eval()
+        # Обработчики подключены внутри CalcInputContentTest через методы on_main_radio_changed и on_additional_radio_changed
 
     def evalImplementation(self):
         i1 = self.getInput(0)
         i2 = self.getInput(1)
-        print(f"----+++++{self.content.ra}")
 
         if i1 is None or i2 is None:
             self.markInvalid()
@@ -695,8 +697,9 @@ class CalcNode_Test(CalcNodeResultTest):
             res_1 = a.get(str(W), "Р-")
             res = res_1[E]
 
-            print(f"rrrrrrrrrr{res}")
+            print(f"Результат: {res}")
 
+            # Устанавливаем значение узла
             self.value = float(res)
             self.markDirty(False)
             self.markInvalid(False)

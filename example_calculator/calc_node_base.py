@@ -1014,7 +1014,6 @@ class CalcNode(Node):
             return self.value
 
         try:
-
             val = self.evalImplementation()
             return val
         except ValueError as e:
