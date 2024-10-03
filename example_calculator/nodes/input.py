@@ -71,7 +71,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
         self.value = 1
         self.ra = 1
 
-        # Создаём QButtonGroup для обеспечения выбора только одной основной радиокнопки
+        # Создаём основные радиокнопки
         self.radio_group = QButtonGroup(self)
         self.radio_1 = QRadioButton("12.5", self)
         self.radio_2 = QRadioButton("6.3", self)
@@ -89,13 +89,14 @@ class CalcInputContentTest(QDMNodeContentWidget):
         spacing = 16  # Расстояние между радиокнопками
         for i, radio_button in enumerate([self.radio_1, self.radio_2, self.radio_3]):
             radio_button.setGeometry(70, y_start + i * spacing, 50, 20)
-            radio_button.clicked.connect(self.on_main_radio_changed)
+            radio_button.clicked.connect(self.on_main_radio_changed)  # Подключаем сигнал
 
         # Создаём дополнительные радиокнопки заранее
         self.create_additional_radios()
 
         # При инициализации устанавливаем дополнительные радиокнопки
         self.update_additional_radios(1)
+
 
     def create_additional_radios(self):
         """Создаёт все дополнительные радиокнопки с фиксированным позиционированием."""
@@ -212,6 +213,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
         # Обновляем дополнительные радиокнопки при изменении основной
         self.update_additional_radios(selected)
         self.update_label()
+        self.node.markDirty(True)
         # Вызовите eval у узла для перерасчёта
         self.node.eval()
 
@@ -220,6 +222,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
         Обработчик изменения дополнительной радиокнопки.
         """
         self.update_label()
+        self.node.markDirty(True)
         # Вызовите eval у узла для перерасчёта
         self.node.eval()
 
@@ -570,8 +573,14 @@ class CalcNode_Test(CalcNodeResultTest):
 
         # Подключаем сигнал изменения дополнительных радиокнопок к обработчику
         # Обработчики подключены внутри CalcInputContentTest через методы on_main_radio_changed и on_additional_radio_changed
+    # def eval(self):
+    #     val = self.evalImplementation()
+    #     return val
+
 
     def evalImplementation(self):
+        # additional_value = self.content.get_selected_additional_option()
+        # print(f"Дополнительная опция: {additional_value}")
         i1 = self.getInput(0)
         i2 = self.getInput(1)
 
