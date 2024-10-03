@@ -65,7 +65,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
         lbl_2.setAlignment(Qt.AlignRight | Qt.AlignCenter)
 
         # Метка для отображения текущего значения
-        self.label = QLabel("12.5 + 3", self)
+        self.label = QLabel("Ra12.5 i3", self)
         self.label.setGeometry(70, -2, 150, 20)  # Увеличен размер для отображения текста
 
         self.value = 1
@@ -144,7 +144,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
 
     def update_additional_radios(self, selected_option):
         """
-        Обновляет выбор дополнительных радиокнопок в зависимости от выбранной основной опции.
+        Обновляет видимость и выбор дополнительных радиокнопок в зависимости от выбранной основной опции.
         :param selected_option: Значение выбранной основной радиокнопки (1, 2 или 3)
         """
         if selected_option == 1:
@@ -155,8 +155,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
             self.additional_radio_2.hide()
             self.additional_radio_3.hide()
 
-            self.additional_radio_1_1.setChecked(True)
-            # При выборе опции 1 выбираем первую дополнительную радиокнопку
+            self.additional_radio_1_1.setChecked(True)  # Выбираем первую дополнительную радиокнопку по умолчанию
         elif selected_option == 2:
             self.additional_radio_2.show()
             self.additional_radio_1_1.hide()
@@ -164,8 +163,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
             self.additional_radio_1_3.hide()
             self.additional_radio_1_4.hide()
             self.additional_radio_3.hide()
-            self.additional_radio_2.setChecked(True)
-            # При выборе опции 2 выбираем дополнительную радиокнопку 2.1
+            self.additional_radio_2.setChecked(True)  # Выбираем дополнительную радиокнопку 2.1 по умолчанию
         elif selected_option == 3:
             self.additional_radio_3.show()
             self.additional_radio_1_1.hide()
@@ -173,8 +171,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
             self.additional_radio_1_3.hide()
             self.additional_radio_1_4.hide()
             self.additional_radio_2.hide()
-            self.additional_radio_3.setChecked(True)
-            # При выборе опции 3 выбираем дополнительную радиокнопку 3.1
+            self.additional_radio_3.setChecked(True)  # Выбираем дополнительную радиокнопку 3.1 по умолчанию
 
         # Обновляем метку после изменения выбора
         self.update_label()
@@ -183,19 +180,31 @@ class CalcInputContentTest(QDMNodeContentWidget):
         """
         Обновляет текст метки на основе выбранной основной и дополнительной радиокнопки.
         """
-        selected_main = "12.5" if self.radio_1.isChecked() else "6.3" if self.radio_2.isChecked() else "1.6"
+        # Определяем выбранную основную радиокнопку
+        if self.radio_1.isChecked():
+            selected_main = "12.5"
+        elif self.radio_2.isChecked():
+            selected_main = "6.3"
+        else:
+            selected_main = "1.6"
 
-        # Находим выбранную дополнительную радиокнопку
+        # Определяем выбранную дополнительную радиокнопку
         additional_selected = ""
         if self.radio_1.isChecked():
-            additional_selected = next((btn.text() for btn in self.additional_group_1.buttons() if btn.isChecked()), "")
+            additional_selected = next(
+                (btn.text() for btn in self.additional_group_1.buttons() if btn.isChecked()), ""
+            )
         elif self.radio_2.isChecked():
-            additional_selected = self.additional_radio_2.text() if self.additional_radio_2.isChecked() else ""
+            additional_selected = (
+                self.additional_radio_2.text() if self.additional_radio_2.isChecked() else ""
+            )
         elif self.radio_3.isChecked():
-            additional_selected = self.additional_radio_3.text() if self.additional_radio_3.isChecked() else ""
+            additional_selected = (
+                self.additional_radio_3.text() if self.additional_radio_3.isChecked() else ""
+            )
 
         # Обновляем текст метки
-        self.label.setText(f"{selected_main}.{additional_selected}")
+        self.label.setText(f"Ra{selected_main} i{additional_selected}")
 
     def on_main_radio_changed(self):
         """
@@ -232,6 +241,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
         for button in self.additional_group_3.buttons():
             if button.isChecked():
                 return button.text()
+        self.node.eval()
         return None
 
     def serialize(self):
@@ -555,6 +565,7 @@ class CalcNode_Test(CalcNodeResultTest):
         """
         Обработчик изменения выбора радиокнопок (основных и дополнительных).
         """
+        #
         # Обновляем метку отображения уже сделано в CalcInputContentTest
         # Поэтому здесь нужно просто вызвать перерасчёт
         self.eval()
@@ -563,7 +574,6 @@ class CalcNode_Test(CalcNodeResultTest):
         i1 = self.getInput(0)
         i2 = self.getInput(1)
         print(f"----+++++{self.content.ra}")
-        print(self.content.label.text())
 
         if i1 is None or i2 is None:
             self.markInvalid()
@@ -583,12 +593,13 @@ class CalcNode_Test(CalcNodeResultTest):
                 print(f"!!!")
 
             # Получаем выбранную дополнительную опцию
+            self.eval()
             additional_value = self.content.get_selected_additional_option()
             print(f"Дополнительная опция: {additional_value}")
 
-            # Продолжение вашей логики расчётов...
-            # Например, использование additional_value в расчётах
+            # Обновляем метку
             self.content.update_label()
+
             try:
                 W = float(i1.eval())
                 E = float(i2.eval())
@@ -597,8 +608,24 @@ class CalcNode_Test(CalcNodeResultTest):
                 self.grNode.setToolTip("Invalid input values")
                 return None
 
+            # Ваши преобразования W и E с учётом additional_value
+            # Например, вы можете использовать дополнительное значение для модификации W или E
+            # Здесь показан простой пример использования additional_value в качестве множителя для W
+            try:
+                # Преобразуем дополнительное значение в число
+                additional_multiplier = float(additional_value)
+            except (ValueError, TypeError):
+                additional_multiplier = 1  # Значение по умолчанию, если дополнительное значение некорректно
 
-            # Ваши преобразования W и E
+            # Модифицируем W и E на основе additional_multiplier
+            W = W
+            E = E  # Пример изменения E
+            print(additional_multiplier)
+            print(f"--- W после преобразования: {W}")
+            print(f"--- E после преобразования: {E}")
+
+            # Далее следует ваша логика расчётов, используя преобразованные W и E
+            # Например:
             if 0 < W <= 20:
                 W = "20.3"
             elif 20 < W <= 50:
@@ -679,6 +706,9 @@ class CalcNode_Test(CalcNodeResultTest):
             s = table[0]
             a = s.get("k1")
             res_1 = a.get(str(W), "Р-")
+            # self.content.update_label()
+            # glub = self.content.label.text()
+            # glub.replace("12.5", '').replace("6.3", '').replace("1.6", '')
             res = res_1[E]
 
             print(f"rrrrrrrrrr{res}")
