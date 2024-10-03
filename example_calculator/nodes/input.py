@@ -213,7 +213,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
         # Обновляем дополнительные радиокнопки при изменении основной
         self.update_additional_radios(selected)
         self.update_label()
-        self.node.markDirty(True)
+        self.node.markDirty(True) ### ВАЖНО ПРИ ИЗМЕНЕНИИ НОДЫ!!!
         # Вызовите eval у узла для перерасчёта
         self.node.eval()
 
@@ -222,7 +222,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
         Обработчик изменения дополнительной радиокнопки.
         """
         self.update_label()
-        self.node.markDirty(True)
+        self.node.markDirty(True)  ### ВАЖНО ПРИ ИЗМЕНЕНИИ НОДЫ!!!
         # Вызовите eval у узла для перерасчёта
         self.node.eval()
 
