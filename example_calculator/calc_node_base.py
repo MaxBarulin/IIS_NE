@@ -27,7 +27,7 @@ path_img_icons = f'{put}\\nodes\\icons\\{open_img_icons}'
 class CalcGraphicsNodeTest(QDMGraphicsNode):
     def initSizes(self):
         super().initSizes()
-        self.width = 200
+        self.width = 160
         self.height = 110
         self.edge_roundness = 0
         self.edge_padding = 0
@@ -307,7 +307,7 @@ class CalcGraphicsNodeComboBox_4(QDMGraphicsNode):
 class CalcContent(QDMNodeContentWidget):
     def initUI(self):
         lbl = QLabel(self.node.content_label, self)
-        lbl.setGeometry(8, 14, 100, 14)
+        lbl.setGeometry(8, -4, 100, 14)
         lbl.setObjectName(self.node.content_label_objname)
 
 

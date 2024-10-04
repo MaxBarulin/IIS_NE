@@ -53,20 +53,24 @@ class CalcInputContentTest(QDMNodeContentWidget):
         # Основные метки
         lbl = QLabel(self.node.content_label, self)
         lbl.setObjectName(self.node.content_label_objname)
-        lbl.setGeometry(8, 22, 100, 14)
+        lbl.setGeometry(8, 12, 100, 14)
 
         lbl_1 = QLabel(self.node.content_label_1, self)
         lbl_1.setObjectName(self.node.content_label_objname)
-        lbl_1.setGeometry(8, 44, 100, 14)
+        lbl_1.setGeometry(8, 34, 100, 14)
 
         lbl_2 = QLabel(self.node.content_label_2, self)
         lbl_2.setObjectName(self.node.content_label_objname)
-        lbl_2.setGeometry(140, 33, 50, 14)
+        lbl_2.setGeometry(100, 33, 50, 14)
         lbl_2.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+
+        lbl_2 = QLabel(self.node.content_label_3, self)
+        lbl_2.setObjectName(self.node.content_label_objname)
+        lbl_2.setGeometry(8, 56, 100, 14)
 
         # Метка для отображения текущего значения
         self.label = QLabel("12.5 + 3", self)
-        self.label.setGeometry(70, -2, 150, 20)  # Увеличен размер для отображения текста
+        self.label.setGeometry(44, -2, 150, 20)  # Увеличен размер для отображения текста
 
         self.value = 1
         self.ra = 1
@@ -88,7 +92,7 @@ class CalcInputContentTest(QDMNodeContentWidget):
         y_start = 18  # Начальная позиция по оси Y
         spacing = 16  # Расстояние между радиокнопками
         for i, radio_button in enumerate([self.radio_1, self.radio_2, self.radio_3]):
-            radio_button.setGeometry(70, y_start + i * spacing, 50, 20)
+            radio_button.setGeometry(24, y_start + i * spacing, 50, 20)
             radio_button.clicked.connect(self.on_main_radio_changed)  # Подключаем сигнал
 
         # Создаём дополнительные радиокнопки заранее
@@ -102,30 +106,30 @@ class CalcInputContentTest(QDMNodeContentWidget):
         """Создаёт все дополнительные радиокнопки с фиксированным позиционированием."""
         # Дополнительные радиокнопки для опции 1 (4 радиокнопки)
         self.additional_radio_1_1 = QRadioButton("3", self)
-        self.additional_radio_1_1.setGeometry(122, 18, 100, 20)
+        self.additional_radio_1_1.setGeometry(76, 18, 100, 20)
         self.additional_radio_1_1.setChecked(True)  # Выбираем по умолчанию
         self.additional_radio_1_1.clicked.connect(self.on_additional_radio_changed)
 
         self.additional_radio_1_2 = QRadioButton("5", self)
-        self.additional_radio_1_2.setGeometry(122, 34, 100, 20)
+        self.additional_radio_1_2.setGeometry(76, 34, 100, 20)
         self.additional_radio_1_2.clicked.connect(self.on_additional_radio_changed)
 
         self.additional_radio_1_3 = QRadioButton("10", self)
-        self.additional_radio_1_3.setGeometry(122, 50, 100, 20)
+        self.additional_radio_1_3.setGeometry(76, 50, 100, 20)
         self.additional_radio_1_3.clicked.connect(self.on_additional_radio_changed)
 
         self.additional_radio_1_4 = QRadioButton("15", self)
-        self.additional_radio_1_4.setGeometry(122, 66, 100, 20)
+        self.additional_radio_1_4.setGeometry(76, 66, 100, 20)
         self.additional_radio_1_4.clicked.connect(self.on_additional_radio_changed)
 
         # Дополнительные радиокнопки для опций 2 и 3 (по 1 радиокнопке каждая)
         self.additional_radio_2 = QRadioButton("1", self)
-        self.additional_radio_2.setGeometry(122, 18, 100, 20)
+        self.additional_radio_2.setGeometry(76, 18, 100, 20)
         self.additional_radio_2.setChecked(True)  # Выбираем по умолчанию
         self.additional_radio_2.clicked.connect(self.on_additional_radio_changed)
 
         self.additional_radio_3 = QRadioButton("0.5", self)
-        self.additional_radio_3.setGeometry(122, 18, 100, 20)
+        self.additional_radio_3.setGeometry(76, 18, 100, 20)
         self.additional_radio_3.setChecked(True)  # Выбираем по умолчанию
         self.additional_radio_3.clicked.connect(self.on_additional_radio_changed)
 
@@ -558,9 +562,10 @@ class CalcNode_Test(CalcNodeResultTest):
     icon = path_img_in
     op_code = OP_NODE_TEST
     op_title = "Точение"
-    content_label = "Диаметр"
-    content_label_1 = "Длина"
+    content_label = "D"
+    content_label_1 = "L"
     content_label_2 = "Н/Ч"
+    content_label_3 = "d"
     content_label_objname = "calc_node_TEST"
 
     def __init__(self, scene):
@@ -714,7 +719,8 @@ class CalcNode_Test(CalcNodeResultTest):
                     a = s_tab.get("k3")
 
                 res_1 = a.get(str(int_WW), "Р-")
-
+                print(res_1)
+                print(Li)
                 res = res_1[Li]
                 list_num.append(res)
                 print(f"append{list_num}")
@@ -1224,7 +1230,10 @@ class CalcNode_Input_5(CalcTable5):
             if 1500 < val32 <= 3000:
                 val32 = 12
             try:
-                self.value = res[val32]
+                try:
+                    self.value = float(res[val32])
+                except:
+                    self.value = res[val32]
             except:
                 self.value = "-"
 

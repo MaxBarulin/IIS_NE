@@ -196,7 +196,7 @@ class CalcNode_Div(CalcNode):
     content_label_objname = "calc_node_div"
 
     def evalOperation(self, input1, input2):
-        return input1 / input2
+        return float(input1) / float(input2)
 
 
 @register_node(OP_NODE_TABLE_6)
