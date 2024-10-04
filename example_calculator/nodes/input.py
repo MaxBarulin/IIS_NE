@@ -564,7 +564,7 @@ class CalcNode_Test(CalcNodeResultTest):
     content_label_objname = "calc_node_TEST"
 
     def __init__(self, scene):
-        super().__init__(scene, inputs=[2, 2], outputs=[1])
+        super().__init__(scene, inputs=[2, 2, 2], outputs=[1])
         self.eval()
 
     def initInnerClasses(self):
@@ -581,10 +581,13 @@ class CalcNode_Test(CalcNodeResultTest):
     def evalImplementation(self):
         # additional_value = self.content.get_selected_additional_option()
         # print(f"Дополнительная опция: {additional_value}")
+        global a, int_WW, res, Li
+        list_num = []
         i1 = self.getInput(0)
         i2 = self.getInput(1)
+        i3 = self.getInput(2)
 
-        if i1 is None or i2 is None:
+        if i1 is None or i2 is None or i3 is None:
             self.markInvalid()
             self.markDescendantsDirty()
             self.grNode.setToolTip("Connect all inputs")
@@ -600,7 +603,9 @@ class CalcNode_Test(CalcNodeResultTest):
 
             try:
                 W = float(i1.eval())
+                Wa = W
                 E = float(i2.eval())
+                L = float(i3.eval())
             except ValueError:
                 self.markInvalid()
                 self.grNode.setToolTip("Invalid input values")
@@ -611,105 +616,233 @@ class CalcNode_Test(CalcNodeResultTest):
             # Здесь показан простой пример использования additional_value в качестве множителя для W
             try:
                 # Преобразуем дополнительное значение в число
-                additional_multiplier = float(additional_value)
+                additional_multiplier = additional_value
             except (ValueError, TypeError):
                 additional_multiplier = 1  # Значение по умолчанию, если дополнительное значение некорректно
 
+            delta_W_E = W - E
+            print(delta_W_E)
+            num_i = delta_W_E / float(additional_multiplier)
+            print(f"num_i = {int(num_i)}")
+            for i in range(int(num_i)):
+                W + float(additional_multiplier)
+                W -= float(additional_multiplier)
+                if additional_multiplier == "0.5":
+                    int_W = float(W)
+                else:
+                    int_W = int(W)
+
+                if 0 < int_W <= 20:
+                    int_WW = f"20|{additional_multiplier}"
+                elif 20 < int_W <= 50:
+                    int_WW = f"50|{additional_multiplier}"
+                elif 50 < int_W <= 100:
+                    int_WW = f"100|{additional_multiplier}"
+                elif 100 < int_W <= 150:
+                    int_WW = f"150|{additional_multiplier}"
+                elif 150 < int_W <= 200:
+                    int_WW = f"200|{additional_multiplier}"
+                elif 200 < int_W <= 250:
+                    int_WW = f"250|{additional_multiplier}"
+                elif 250 < int_W <= 300:
+                    int_WW = f"300|{additional_multiplier}"
+                elif 300 < int_W <= 400:
+                    int_WW = f"400|{additional_multiplier}"
+                elif 400 < int_W <= 500:
+                    int_WW = f"500|{additional_multiplier}"
+                elif 500 < int_W <= 750:
+                    int_WW = f"750|{additional_multiplier}"
+                elif 750 < int_W <= 1000:
+                    int_WW = f"1000|{additional_multiplier}"
+                elif 1000 < int_W <= 1250:
+                    int_WW = f"1250|{additional_multiplier}"
+                elif 1250 < int_W <= 1500:
+                    int_WW = f"1500|{additional_multiplier}"
+                elif 1500 < int_W <= 2000:
+                    int_WW = f"2000|{additional_multiplier}"
+
+                if 0 < L <= 10:
+                    Li = 0
+                elif 10 < L <= 20:
+                    Li = 1
+                elif 20 < L <= 50:
+                    Li = 2
+                elif 50 < L <= 100:
+                    Li = 3
+                elif 100 < L <= 200:
+                    Li = 4
+                elif 200 < L <= 300:
+                    Li = 5
+                elif 300 < L <= 400:
+                    Li = 6
+                elif 400 < L <= 500:
+                    Li = 7
+                elif 500 < L <= 600:
+                    Li = 8
+                elif 600 < L <= 700:
+                    Li = 9
+                elif 700 < L <= 800:
+                    Li = 10
+                elif 800 < L <= 1000:
+                    Li = 11
+                elif 1000 < L <= 1200:
+                    Li = 12
+                elif 1200 < L <= 1600:
+                    Li = 13
+                elif 1600 < L <= 2000:
+                    Li = 14
+                elif 2000 < L <= 2500:
+                    Li = 15
+                elif 2500 < L <= 3000:
+                    Li = 16
+                elif 3000 < L <= 4000:
+                    Li = 17
+                elif 4000 < L <= 5000:
+                    Li = 18
+                elif 5000 < L <= 6000:
+                    Li = 19
+                elif 7000 < L <= 8000:
+                    Li = 20
+
+                table = create_tables_turning_other()
+                s_tab = table[0]
+                if additional_multiplier == "3" or additional_multiplier == "5" or additional_multiplier == "10" or additional_multiplier == "15":
+                    a = s_tab.get("k1")
+                elif additional_multiplier == "1":
+                    a = s_tab.get("k2")
+                elif additional_multiplier == "0.5":
+                    a = s_tab.get("k3")
+
+                res_1 = a.get(str(int_WW), "Р-")
+
+                res = res_1[Li]
+                list_num.append(res)
+                print(f"append{list_num}")
+
+
+                print("=======")
+                print(int_W)
+                print(int_WW)
+                print(L)
+                print(Li)
+                print(res)
+                print("=======")
+
+                if int_W < E:
+                    break
+
             # Модифицируем W и E на основе additional_multiplier
-            W = W * additional_multiplier
-            E = E + additional_multiplier  # Пример изменения E
+            # W1 = f"{W}.{additional_multiplier}"
+            # print(W1)
+            #E = E + additional_multiplier  # Пример изменения E
 
-            print(f"--- W после преобразования: {W}")
-            print(f"--- E после преобразования: {E}")
-
-            # Далее следует ваша логика расчётов, используя преобразованные W и E
-            # Например:
-            if 0 < W <= 20:
-                W = "20.3"
-            elif 20 < W <= 50:
-                W = "50.3"
-            elif 50 < W <= 100:
-                W = "100.3"
-            elif 100 < W <= 150:
-                W = "150.3"
-            elif 150 < W <= 200:
-                W = "200.3"
-            elif 200 < W <= 250:
-                W = "250.3"
-            elif 250 < W <= 300:
-                W = "300.3"
-            elif 300 < W <= 400:
-                W = "400.3"
-            elif 400 < W <= 500:
-                W = "500.3"
-            elif 500 < W <= 750:
-                W = "750.3"
-            elif 750 < W <= 1000:
-                W = "1000.3"
-            elif 1000 < W <= 1250:
-                W = "1250.3"
-            elif 1250 < W <= 1500:
-                W = "1500.3"
-            elif 1500 < W <= 2000:
-                W = "2000.3"
-
-            print(f"---{W}")
-
-            if 0 < E <= 10:
-                E = 0
-            elif 10 < E <= 20:
-                E = 1
-            elif 20 < E <= 50:
-                E = 2
-            elif 50 < E <= 100:
-                E = 3
-            elif 100 < E <= 200:
-                E = 4
-            elif 200 < E <= 300:
-                E = 5
-            elif 300 < E <= 400:
-                E = 6
-            elif 400 < E <= 500:
-                E = 7
-            elif 500 < E <= 600:
-                E = 8
-            elif 600 < E <= 700:
-                E = 9
-            elif 700 < E <= 800:
-                E = 10
-            elif 800 < E <= 1000:
-                E = 11
-            elif 1000 < E <= 1200:
-                E = 12
-            elif 1200 < E <= 1600:
-                E = 13
-            elif 1600 < E <= 2000:
-                E = 14
-            elif 2000 < E <= 2500:
-                E = 15
-            elif 2500 < E <= 3000:
-                E = 16
-            elif 3000 < E <= 4000:
-                E = 17
-            elif 4000 < E <= 5000:
-                E = 18
-            elif 5000 < E <= 6000:
-                E = 19
-            elif 7000 < E <= 8000:
-                E = 20
-
-            print(f"---{E}")
-
-            table = create_tables_turning_other()
-            s = table[0]
-            a = s.get("k1")
-            res_1 = a.get(str(W), "Р-")
-            res = res_1[E]
-
-            print(f"Результат: {res}")
+            # print(f"--- W после преобразования: {W}")
+            # print(f"--- E после преобразования: {E}")
+            # print(f"--- L после преобразования: {L}")
+            #
+            # # Далее следует ваша логика расчётов, используя преобразованные W и E
+            # # Например:
+            #
+            # if 0 < Wa <= 20:
+            #     Wa = "20"
+            # elif 20 < Wa <= 50:
+            #     Wa = "50"
+            # elif 50 < Wa <= 100:
+            #     Wa = "100"
+            # elif 100 < Wa <= 150:
+            #     Wa = "150"
+            # elif 150 < Wa <= 200:
+            #     Wa = "200"
+            # elif 200 < Wa <= 250:
+            #     Wa = "250"
+            # elif 250 < Wa <= 300:
+            #     Wa = "300"
+            # elif 300 < Wa <= 400:
+            #     Wa = "400"
+            # elif 400 < Wa <= 500:
+            #     Wa = "500"
+            # elif 500 < Wa <= 750:
+            #     Wa = "750"
+            # elif 750 < Wa <= 1000:
+            #     Wa = "1000"
+            # elif 1000 < Wa <= 1250:
+            #     Wa = "1250"
+            # elif 1250 < Wa <= 1500:
+            #     Wa = "1500"
+            # elif 1500 < Wa <= 2000:
+            #     Wa = "2000"
+            #
+            # print(f"---{Wa}")
+            #
+            # if 0 < L <= 10:
+            #     L = 0
+            # elif 10 < L <= 20:
+            #     L = 1
+            # elif 20 <L <= 50:
+            #     L = 2
+            # elif 50 < L <= 100:
+            #     L = 3
+            # elif 100 < L <= 200:
+            #     L = 4
+            # elif 200 < L <= 300:
+            #     L = 5
+            # elif 300 < L <= 400:
+            #     L = 6
+            # elif 400 < L <= 500:
+            #     L = 7
+            # elif 500 < L <= 600:
+            #     L = 8
+            # elif 600 < L <= 700:
+            #     L = 9
+            # elif 700 < L <= 800:
+            #     L = 10
+            # elif 800 < L <= 1000:
+            #     L = 11
+            # elif 1000 < L <= 1200:
+            #     L = 12
+            # elif 1200 < L <= 1600:
+            #     L = 13
+            # elif 1600 < L <= 2000:
+            #     L = 14
+            # elif 2000 < L <= 2500:
+            #     L = 15
+            # elif 2500 < L <= 3000:
+            #     L = 16
+            # elif 3000 < L <= 4000:
+            #     L = 17
+            # elif 4000 < L <= 5000:
+            #     L = 18
+            # elif 5000 < L <= 6000:
+            #     L = 19
+            # elif 7000 < L <= 8000:
+            #     L = 20
+            #
+            # print(f"---s-{L}")
+            # W1 = f"{Wa}|{additional_multiplier}"
+            # print(W1)
+            # table = create_tables_turning_other()
+            # s_tab = table[0]
+            # if additional_multiplier == "3" or additional_multiplier == "5" or additional_multiplier == "10" or additional_multiplier == "15":
+            #     a = s_tab.get("k1")
+            # elif additional_multiplier == "1":
+            #     a = s_tab.get("k2")
+            # elif additional_multiplier == "0.5":
+            #     a = s_tab.get("k3")
+            #
+            # res_1 = a.get(str(W1), "Р-")
+            # try:
+            #     res = res_1[L]
+            # except:
+            #     res = "p-"
+            #
+            # print(f"Результат: {res}")
 
             # Устанавливаем значение узла
-            self.value = float(res)
+            print(list_num)
+            resul = sum(list_num)
+            print(f"{resul}******")
+
+            self.value = round(resul, 2)
             self.markDirty(False)
             self.markInvalid(False)
 
