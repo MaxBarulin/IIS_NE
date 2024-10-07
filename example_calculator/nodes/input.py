@@ -628,6 +628,8 @@ class CalcNode_Test(CalcNodeResultTest):
             delta_W_E = W - E
             print(delta_W_E)
             num_i = delta_W_E / float(additional_multiplier)
+            if 0 < num_i < 1:
+                num_i = 1
             print(f"num_i = {int(num_i)}")
             for i in range(int(num_i)):
                 W + float(additional_multiplier)
