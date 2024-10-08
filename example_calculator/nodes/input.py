@@ -48,6 +48,7 @@ QComboBox QAbstractItemView {
 }
 '''
 
+
 class CalcInputContentTest(QDMNodeContentWidget):
     def initUI(self):
         # Основные метки
@@ -555,6 +556,7 @@ class CalcInputContent_4(QDMNodeContentWidget):
         except Exception as e:
             dumpException(e)
         return res
+
 
 
 @register_node(OP_NODE_TEST)
